@@ -1,7 +1,7 @@
 """Serializers for the models"""
 
 from rest_framework import serializers
-from .models import MenuItems, Category, Cart, CartItems
+from .models import MenuItems, Category, Cart, CartItems, Order, OrderItems
 from django.contrib.auth.models import User
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -19,13 +19,31 @@ class MenuItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuItems
         fields = ['id', 'title', 'price', 'description','category', 'category_id']
+
+class CartSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(
+        source='User',
+        queryset=User.objects.all(),
+        write_only=True
+    )
+    class Meta:
+        model = Cart
+        fields = ['user', 'user_id']
     
 class CartItemsSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(),
-        default=serializers.CurrentUserDefault()
+        default=serializers.CurrentUserDefault(),
+        read_only=True
     )
-    menuitem = MenuItemSerializer()
+    menuitem_id = serializers.PrimaryKeyRelatedField(
+        source='menuitem',
+        queryset=MenuItems.objects.all(),
+    )
+    cart_id = serializers.PrimaryKeyRelatedField(
+        source='cart',
+        queryset=Cart.objects.all(),
+        write_only=True
+    )
 
     def validate(self, attrs):
         # Retrieve the actual menu item price and calculate the total price
@@ -36,7 +54,12 @@ class CartItemsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItems
-        fields = ['user', 'menuitem', 'unit_price', 'quantity', 'price']
+        fields = ['user', 'cart_id', 'menuitem_id', 'quantity', 'price']
         extra_kwargs = {
             'price': {'read_only': True}
         }
+
+class OrderItemsSerilizer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItems
+        fields = ['user', 'order_id', 'menuitem_id']

@@ -1,16 +1,14 @@
-from django.shortcuts import render, HttpResponse
-from .models import MenuItems, Order, Cart, OrderItems, CartItems
-from .serializers import MenuItemSerializer, CartItemsSerializer
+from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.models import User, Group
-# Create your views here.
-
-"""API's Endpoints"""
+from django.contrib.auth.models import User
+from .models import MenuItems, Cart, CartItems
+from .serializers import MenuItemSerializer, CartItemsSerializer, CartSerializer
 
 class MenuItemsView(generics.ListCreateAPIView):
     """API that lists and creates Menu items"""
+
     queryset = MenuItems.objects.all()
     serializer_class = MenuItemSerializer
     
@@ -18,10 +16,10 @@ class MenuItemsView(generics.ListCreateAPIView):
         if not request.user.groups.filter(name='Manager').exists():
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
         return super().create(request, *args, **kwargs)
-    
 
 class MenuItemView(generics.RetrieveUpdateDestroyAPIView):
     """API that retrieves, updates, and destroys Menu items"""
+
     queryset = MenuItems.objects.all()
     serializer_class = MenuItemSerializer
     
@@ -35,10 +33,29 @@ class MenuItemView(generics.RetrieveUpdateDestroyAPIView):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
         return super().destroy(request, *args, **kwargs)
 
-class CartitemsView(generics.ListCreateAPIView):
-    """API that list and add items to cart"""
-    
-    queryset = CartItems.objects.all()
+class CartView(generics.ListCreateAPIView):
+    """API that lists and creates cart for the user"""
+
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only return the cart for the current user
+        return Cart.objects.filter(user=self.request.user)
+
+class CartItemsView(generics.ListCreateAPIView):
+    """API that lists and adds items to the cart"""
+
+    serializer_class = CartItemsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only return the cart items for the current user
+        return CartItems.objects.filter(cart__user=self.request.user)
+
+class SingleCartItemsView(generics.RetrieveUpdateDestroyAPIView):
+    """API that retrieves, updates, and destroys a single cart item"""
+
     serializer_class = CartItemsSerializer
     permission_classes = [IsAuthenticated]
 

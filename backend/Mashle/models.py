@@ -9,6 +9,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
 class MenuItems(models.Model):
     """Model of menu items"""
     title = models.CharField(max_length=255)  # Add max_length attribute
@@ -18,9 +19,18 @@ class MenuItems(models.Model):
     
     def __str__(self):
         return self.title
+    class Meta:
+        verbose_name_plural = "Menu Items"
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
+    
+    def __str__(self):
+        return f"{self.user} cart"
+
+    class Meta:
+        verbose_name_plural = "Carts"
+
 
 class CartItems(models.Model):
     menuitem = models.ForeignKey(MenuItems, on_delete=models.PROTECT)
@@ -29,13 +39,25 @@ class CartItems(models.Model):
     quantity = models.PositiveIntegerField(default=1)  # Add quantity field with a default value
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def __str__(self):
+        return f"{self.cart} {self.menuitem}"
+    
+    class Meta:
+        verbose_name_plural = "Cart Items"
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     total = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=50)  # Add max_length attribute
+    
+    class Meta:
+        verbose_name_plural = "Orders"
 
 class OrderItems(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)  # Use models.CASCADE
     menuitem = models.ForeignKey(MenuItems, on_delete=models.PROTECT)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
     subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    class Meta:
+        verbose_name_plural = "Order Items"
