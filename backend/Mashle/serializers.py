@@ -1,5 +1,3 @@
-"""Serializers for the models"""
-
 from rest_framework import serializers
 from .models import MenuItems, Category, Cart, CartItems, Order, OrderItems
 from django.contrib.auth.models import User
@@ -22,14 +20,16 @@ class MenuItemSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(
-        source='User',
+        source='user',
         queryset=User.objects.all(),
         write_only=True
     )
+
     class Meta:
         model = Cart
-        fields = ['user', 'user_id']
-    
+        fields = ['id', 'user_id']
+
+
 class CartItemsSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(
         default=serializers.CurrentUserDefault(),
@@ -59,7 +59,23 @@ class CartItemsSerializer(serializers.ModelSerializer):
             'price': {'read_only': True}
         }
 
-class OrderItemsSerilizer(serializers.ModelSerializer):
+class OrderItemsSerializer(serializers.ModelSerializer):
+    cart_item = CartItemsSerializer(read_only=True)
+
     class Meta:
         model = OrderItems
-        fields = ['user', 'order_id', 'menuitem_id']
+        fields = ['id', 'cart_item', 'price']
+        read_only_fields = ['price']
+
+class OrderSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        default=serializers.CurrentUserDefault(),
+    )
+    order_items = OrderItemsSerializer(many=True, read_only=True, source='orderitems_set')
+
+    class Meta:
+        model = Order
+        fields = ['id', 'user', 'total', 'status', 'order_items']
+        read_only_fields = ['total']
+
