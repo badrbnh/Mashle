@@ -1,15 +1,55 @@
 from datetime import datetime
 from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission
 from django.contrib.auth.models import User
-from .models import MenuItems, Cart, CartItems, Order, OrderItems
-from .serializers import MenuItemSerializer, CartItemsSerializer, CartSerializer, OrderSerializer, OrderItemsSerializer
+from .models import Category, MenuItems, Cart, CartItems, Order, OrderItems, Table, Reservation, Reviews
+from .serializers import CategorySerializer, MenuItemSerializer, CartItemsSerializer,\
+    CartSerializer, OrderSerializer, OrderItemsSerializer, ReservationSerializer, ReviewSerializer, TableSerializer
 
 class ManagerPermissionMixin:
     """Mixin to check manager permission."""
     def has_manager_permission(self, request):
         return request.user.groups.filter(name='Manager').exists()
+
+class ManagerPermission(BasePermission, ManagerPermissionMixin):
+    """
+    Custom permission to check if the user has 'Manager' group permission.
+    """
+
+    def has_permission(self, request, view):
+        # Use ManagerPermissionMixin to check manager permission
+        return view.has_manager_permission(request)
+
+class CategoryView(generics.ListCreateAPIView, ManagerPermissionMixin):
+    """API that lists and creates Categories."""
+    
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    def create(self, request, *args, **kwargs):
+        """Only Managers can create a category."""
+        if not self.has_manager_permission(request):
+            return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
+        return super().create(request, *args, **kwargs)
+
+class SingleCategoryView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissionMixin):
+    """API that lists and creates Categories."""
+    
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+    def update(self, request, *args, **kwargs):
+        """Only managers can update"""
+        if not self.has_manager_permission(request):
+            return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """Only managers can destroy"""
+        if not self.has_manager_permission(request):
+            return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
+        return super().destroy(request, *args, **kwargs)
 
 class MenuItemsView(generics.ListCreateAPIView, ManagerPermissionMixin):
     """API that lists and creates Menu items."""
@@ -18,6 +58,7 @@ class MenuItemsView(generics.ListCreateAPIView, ManagerPermissionMixin):
     serializer_class = MenuItemSerializer
 
     def create(self, request, *args, **kwargs):
+        """Only managers can create"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
         return super().create(request, *args, **kwargs)
@@ -29,11 +70,13 @@ class MenuItemView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissionMixin
     serializer_class = MenuItemSerializer
 
     def update(self, request, *args, **kwargs):
+        """Only managers can update"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
+        """Only managers can destroy"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
         return super().destroy(request, *args, **kwargs)
@@ -65,7 +108,7 @@ class SingleCartItemsView(generics.RetrieveUpdateDestroyAPIView):
         """Only return the cart items for the current user."""
         return CartItems.objects.filter(cart__user=self.request.user)
 
-class OrderView(generics.ListCreateAPIView):
+class OrderView(generics.ListAPIView):
     """API that list/create all orders of a user."""
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
@@ -105,4 +148,48 @@ class OrderItemsView(generics.ListCreateAPIView):
         new_order = self.create_order_and_items(request.user)
         serializer = self.serializer_class(new_order)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ReviewView(generics.ListCreateAPIView):
+    """API view to list and create reviews."""
+    queryset = Reviews.objects.all().order_by('-id')
+    serializer_class = ReviewSerializer
+
+class SingleReviewView(generics.RetrieveUpdateDestroyAPIView):
+    """API view to retrieve, update and delete"""
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewSerializer
+
+class TableView(generics.ListCreateAPIView, ManagerPermissionMixin):
+    """API view to list and create tables."""
+    queryset = Table.objects.all()
+    serializer_class = TableSerializer
+    permission_classes = [ManagerPermission]
+
+class SingleTableView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissionMixin):
+    """API view to retrieve, update and delete"""
+    queryset = Table.objects.all()
+    serializer_class = TableSerializer
+    permission_classes = [ManagerPermission]
+
+class ReservationView(generics.ListCreateAPIView, ManagerPermissionMixin):
+    """API view to list and create reservations."""
+    serializer_class = ReservationSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        """Only return reservations for the current user or authorized manager."""
+        if not self.has_manager_permission(self.request):
+            return Reservation.objects.filter(user=self.request.user)
+        else:
+            return Reservation.objects.all()
+
+    def perform_create(self, serializer):
+        """Automatically set the user for the reservation."""
+        serializer.save(user=self.request.user)
+
+class SingleReservationView(generics.RetrieveUpdateDestroyAPIView):
+    """API view to retrieve, update, and delete a reservation."""
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
 
