@@ -3,8 +3,7 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     """Model representing a category for menu items."""
-    slug = models.SlugField()
-    title = models.CharField(max_length=255, verbose_name="Title")
+    title = models.CharField(max_length=255, verbose_name="Title", unique=True)
 
     def __str__(self):
         return self.title

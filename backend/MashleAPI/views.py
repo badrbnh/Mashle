@@ -43,25 +43,30 @@ class SingleCategoryView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissio
         """Only managers can update"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
-        return super().update(request, *args, **kwargs)
+        super().update(request, *args, **kwargs)
+        return Response({"message": "ok"}, status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         """Only managers can destroy"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
-        return super().destroy(request, *args, **kwargs)
+        super().destroy(request, *args, **kwargs)
+        return Response({"message": "ok"}, status=status.HTTP_200_OK)
 
 class MenuItemsView(generics.ListCreateAPIView, ManagerPermissionMixin):
     """API that lists and creates Menu items."""
 
     queryset = MenuItems.objects.all()
     serializer_class = MenuItemSerializer
+    search_fields = ['category__title']
+    ordering_fields = ['price']
 
     def create(self, request, *args, **kwargs):
         """Only managers can create"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
-        return super().create(request, *args, **kwargs)
+        super().create(request, *args, **kwargs)
+        return Response({"message": "ok"}, status=status.HTTP_200_OK)
 
 class MenuItemView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissionMixin):
     """API that retrieves, updates, and destroys Menu items."""
@@ -73,13 +78,15 @@ class MenuItemView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissionMixin
         """Only managers can update"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
-        return super().update(request, *args, **kwargs)
+        super().update(request, *args, **kwargs)
+        return Response({"message": "ok"}, status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         """Only managers can destroy"""
         if not self.has_manager_permission(request):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
-        return super().destroy(request, *args, **kwargs)
+        super().destroy(request, *args, **kwargs)
+        return Response({"message": "ok"}, status=status.HTTP_200_OK)
 
 class CartView(generics.ListCreateAPIView):
     """API that lists and creates cart for the user."""
