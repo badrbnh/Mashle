@@ -257,3 +257,99 @@ class DeliveryCrewViewSet(viewsets.ViewSet):
         dc = Group.objects.get(name="Delivery Crew")
         dc.user_set.remove(user)
         return Response({"message": "user removed from the delivery crew group"}, 200)
+
+class ChefViewSet(viewsets.ViewSet):
+    """API that chef GROUP"""
+    permission_classes = [IsAuthenticated]
+    def list(self, request):
+        """Listing the chef"""
+        users = User.objects.all().filter(groups__name='Chef')
+        items = UserSerilializer(users, many=True)
+        return Response(items.data)
+
+    def create(self, request):
+        """Creating the chef"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Chef")
+        dc.user_set.add(user)
+        return Response({"message": "user added to the chef group"}, 200)
+
+    def destroy(self, request):
+        """Deleting the chef"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Chef")
+        dc.user_set.remove(user)
+        return Response({"message": "user removed from the chef group"}, 200)
+
+class WaiterViewSet(viewsets.ViewSet):
+    """API that Waiter GROUP"""
+    permission_classes = [IsAuthenticated]
+    def list(self, request):
+        """Listing the Waiter"""
+        users = User.objects.all().filter(groups__name='Waiter')
+        items = UserSerilializer(users, many=True)
+        return Response(items.data)
+
+    def create(self, request):
+        """Creating the Waiter"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Waiter")
+        dc.user_set.add(user)
+        return Response({"message": "user added to the Waiter group"}, 200)
+
+    def destroy(self, request):
+        """Deleting the Waiter"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Waiter")
+        dc.user_set.remove(user)
+        return Response({"message": "user removed from the Waiter group"}, 200)
+
+class CashierViewSet(viewsets.ViewSet):
+    """API that Cashier GROUP"""
+    permission_classes = [IsAuthenticated]
+    def list(self, request):
+        """Listing the Cashier"""
+        users = User.objects.all().filter(groups__name='Cashier')
+        items = UserSerilializer(users, many=True)
+        return Response(items.data)
+
+    def create(self, request):
+        """Creating the Cashier"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Cashier")
+        dc.user_set.add(user)
+        return Response({"message": "user added to the Cashier group"}, 200)
+
+    def destroy(self, request):
+        """Deleting the Cashier"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Cashier")
+        dc.user_set.remove(user)
+        return Response({"message": "user removed from the Cashier group"}, 200)

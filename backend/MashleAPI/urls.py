@@ -21,5 +21,14 @@ urlpatterns = [
         {'get': 'list', 'post': 'create', 'delete': 'destroy'})),
 
     path('groups/delivery-crew/users', views.DeliveryCrewViewSet.as_view(
-        {'get': 'list', 'post': 'create', 'delete': 'destroy'}))
+        {'get': 'list', 'post': 'create', 'delete': 'destroy'})),
+
+    path('groups/chef/users', views.ChefViewSet.as_view(
+        {'get': 'list', 'post': 'create', 'delete': 'destroy'})),
+
+    path('groups/waiter/users', views.WaiterViewSet.as_view(
+        {'get': 'list', 'post': 'create', 'delete': 'destroy'})),
+
+    path('groups/cashier/users', views.CashierViewSet.as_view(
+        {'get': 'list', 'post': 'create', 'delete': 'destroy'})),
 ]
