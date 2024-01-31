@@ -19,7 +19,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include('MashleClient.urls')),
     path("api/v1/", include('MashleAPI.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path("swagger/", schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
