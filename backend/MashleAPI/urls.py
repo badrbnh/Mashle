@@ -17,4 +17,9 @@ urlpatterns = [
     path("tables/<int:pk>", views.SingleTableView.as_view(), name="single-table"),
     path("reservations", views.ReservationView.as_view(), name="reservations"),
     path("reservations/<int:pk>", views.SingleReservationView.as_view(), name="single-reservation"),
+    path('groups/manager/users', views.ManagerViewSet.as_view(
+        {'get': 'list', 'post': 'create', 'delete': 'destroy'})),
+
+    path('groups/delivery-crew/users', views.DeliveryCrewViewSet.as_view(
+        {'get': 'list', 'post': 'create', 'delete': 'destroy'}))
 ]

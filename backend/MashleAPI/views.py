@@ -1,11 +1,13 @@
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User, Group
 from datetime import datetime
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, BasePermission
-from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser
 from .models import Category, MenuItems, Cart, CartItems, Order, OrderItems, Table, Reservation, Reviews
 from .serializers import CategorySerializer, MenuItemSerializer, CartItemsSerializer,\
-    CartSerializer, OrderSerializer, OrderItemsSerializer, ReservationSerializer, ReviewSerializer, TableSerializer
+    CartSerializer, OrderSerializer, OrderItemsSerializer, ReservationSerializer,\
+        ReviewSerializer, TableSerializer, UserSerilializer
 
 class ManagerPermissionMixin:
     """Mixin to check manager permission."""
@@ -200,3 +202,58 @@ class SingleReservationView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
+class ManagerViewSet(viewsets.ViewSet):
+    """API that manager GROUP"""
+    permission_classes = [IsAdminUser]
+    
+    def list(self, request):
+        """Listing the mangers"""
+        users = User.objects.all().filter(groups__user='Manager')
+        items = UserSerilializer(users, many=True)
+        return Response(items.data)
+    
+    def create(self, request):
+        """Creating the managers"""
+        user = get_object_or_404(User, username=request.data['username'])
+        managers = Group.objects.get(name="Manager")
+        managers.user_set.add(user)
+        return Response({"message": "user added to the manager group"}, 200)
+
+    def destroy(self, request):
+        """Deleting the managers"""
+        user = get_object_or_404(User, username=request.data['username'])
+        managers = Group.objects.get(name="Manager")
+        managers.user_set.remove(user)
+        return Response({"message": "user removed from the manager group"}, 200)
+
+class DeliveryCrewViewSet(viewsets.ViewSet):
+    """API that delivery crew GROUP"""
+    permission_classes = [IsAuthenticated]
+    def list(self, request):
+        """Listing the delivery crew"""
+        users = User.objects.all().filter(groups__name='Delivery Crew')
+        items = UserSerilializer(users, many=True)
+        return Response(items.data)
+
+    def create(self, request):
+        """Creating the delivery crew"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Delivery Crew")
+        dc.user_set.add(user)
+        return Response({"message": "user added to the delivery crew group"}, 200)
+
+    def destroy(self, request):
+        """Deleting the delivery crew"""
+        #only for super admin and managers
+        if self.request.user.is_superuser == False:
+            if self.request.user.groups.filter(name='Manager').exists() == False:
+                return Response({"message":"forbidden"}, status.HTTP_403_FORBIDDEN)
+        user = get_object_or_404(User, username=request.data['username'])
+        dc = Group.objects.get(name="Delivery Crew")
+        dc.user_set.remove(user)
+        return Response({"message": "user removed from the delivery crew group"}, 200)

@@ -134,3 +134,9 @@ class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = ['id', 'user', 'table', 'table_id', 'date', 'time', 'status']
+
+class UserSerilializer(serializers.ModelSerializer):
+    """Serializer for User model"""
+    class Meta:
+        model = User
+        fields = ['id','username','email']
