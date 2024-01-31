@@ -86,6 +86,7 @@ class Reviews(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    menuitem = models.ForeignKey(MenuItems, on_delete=models.PROTECT)
     username = models.CharField(max_length=255)  # Corrected typo: usrrname to username
     content = models.TextField(verbose_name="Content")
     stars = models.IntegerField(choices=STAR_CHOICES, verbose_name="Stars")
