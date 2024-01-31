@@ -17,7 +17,7 @@ class MenuItems(models.Model):
     ]
 
     title = models.CharField(max_length=255, verbose_name="Title", unique=True, db_index=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Price")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Price", db_index=True)
     description = models.TextField(verbose_name="Description")
     stock = models.CharField(max_length=15, choices=STOCK_CHOICES, default='In Stock', verbose_name="Stock")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name="Category")
