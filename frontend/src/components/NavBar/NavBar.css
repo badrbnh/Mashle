@@ -1,0 +1,54 @@
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 62px;
+  padding: 12px 0;
+  border-bottom: #000 solid 1px;
+  font-family: "Oi", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.links-container {
+  display: flex;
+  align-items: center;
+  margin-left: 32px;
+  width: 100%;
+}
+.logo {
+  width: 240px;
+  height: 80px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 52%;
+  list-style: none;
+  font-size: 24px;
+}
+
+.nav-links a {
+  color: #000;
+  text-decoration: none;
+}
+
+.nav-addOns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 14%;
+  margin-right: 32px;
+}
+
+.nav-addOns img {
+  width: 32px;
+  height: 32px;
+  margin-right: 24px;
+}
+
+.nav-links a:hover {
+  color: #d17801;
+}
