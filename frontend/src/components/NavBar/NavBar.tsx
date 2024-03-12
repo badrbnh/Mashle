@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import logo from '../../assets/logo.png'; // Import the image
-import './NavBar.css'; // Import the CSS file
+import { Link} from 'react-router-dom';
+import logo from '../../assets/logo.png';
+import './NavBar.css';
+import cart from "../../assets/cart.svg";
+import user from "../../assets/add-user-male.svg";
+import Search from './search';
 
 interface NavBarProps {
   links: string[];
-  addOns: string[];
 }
 
-const NavBar: React.FC<NavBarProps> = ({ links, addOns }) => {
+const NavBar: React.FC<NavBarProps> = ({ links }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const activeStyle = { borderBottom: '4px solid #d17801', color: '#d17801', paddingBottom: '32px'};
-
+  const activeStyle = { borderBottom: '4px solid #d17801', color: '#d17801', paddingBottom: '38px'};
   function handleClick(index: number) {
     setSelectedIndex(index);
     console.log(`${links[index]}`);
@@ -30,10 +32,10 @@ const NavBar: React.FC<NavBarProps> = ({ links, addOns }) => {
           ))}
         </ul>
       </div>
-      <div className="nav-addOns" style={{ margin: 0 }}>
-        {addOns.map((addOn, index) => (
-          <img key={index} src={addOn} alt={`Add-on ${index}`} />
-        ))}
+      <div className="nav-addOns">
+          <Search />
+          <img src={cart} alt="cart" className="cart-icon" />
+          <Link to={"/login"}><img src={user} alt="user" className="user-icon" /></Link>
       </div>
     </nav>
   );

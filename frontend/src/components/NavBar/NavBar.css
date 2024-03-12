@@ -1,19 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 62px;
+  margin: 0 auto;
+  max-width: 1500px;
+  width: 100%;
   padding: 12px 0;
-  border-bottom: #000 solid 1px;
-  font-family: "Oi", serif;
-  font-weight: 400;
-  font-style: normal;
+  border-bottom: #bebbbb solid 0.5px;
+  font-family: "Montserrat", sans-serif;
 }
 
 .links-container {
   display: flex;
   align-items: center;
-  margin-left: 32px;
   width: 100%;
 }
 .logo {
@@ -27,7 +28,8 @@ nav {
   justify-content: space-between;
   width: 52%;
   list-style: none;
-  font-size: 24px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .nav-links a {
@@ -38,15 +40,15 @@ nav {
 .nav-addOns {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 14%;
-  margin-right: 32px;
+  justify-content: flex-end;
+  gap: 24px;
+  width: 40%;
+  font-size: 16px;
 }
 
 .nav-addOns img {
   width: 32px;
   height: 32px;
-  margin-right: 24px;
 }
 
 .nav-links a:hover {

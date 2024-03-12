@@ -1,0 +1,41 @@
+.search-container {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  box-sizing: border-box;
+  border-radius: 50px;
+  padding: 5px;
+  transition: all 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.search-hovered {
+  width: 40%;
+  border: 4px solid #d17801;
+}
+
+.search-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 42px;
+  line-height: 30px;
+  outline: 0;
+  border: 0;
+  font-size: 14px;
+  border-radius: 20px;
+  padding: 0 20px;
+  margin: 0;
+  appearance: none;
+  display: none;
+}
+
+.search-input.show {
+  display: block;
+}
+
+/* Additional styles for icons */

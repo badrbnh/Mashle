@@ -1,15 +1,28 @@
-import NavBar from "./components/NavBar/NavBar";
-import cart from "./assets/cart.svg";
-import search from "./assets/search.svg";
-import user from "./assets/add-user-male.svg";
-const App = () => {
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NavBar from './components/NavBar/NavBar';
+import Footer from './components/Footer/Footer';
+import Home from './pages/Home'; // Assuming your component file is named Home.tsx
+import Login from './pages/login';
+
+const App: React.FC = () => {
   return (
-    <header>
-      <NavBar
-        links={["Home", "Our menu", "About us", "Contact us", "Locations"]}
-        addOns={[search, cart, user]}
-      />
-    </header>
+    <>
+      <BrowserRouter>
+      <header>
+        <NavBar
+          links={["Home", "Our menu", "About us", "Contact us", "Locations"]}
+        />
+      </header>
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </main>
+      <Footer />
+      </BrowserRouter>
+    </>
   );
 };
 

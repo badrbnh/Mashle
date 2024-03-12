@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Oi&display=swap");
+
+footer {
+  background-color: #0e1b3b;
+  bottom: 0;
+
+  line-height: 60px;
+  color: #d17801;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.footer-1st-half {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-home {
+  font-size: 32px;
+  font-family: "Oi", sans-serif;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.footer-1st-half a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #d17801;
+}
+
+.footer-2nd-half {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #f8f8f8;
+  margin-bottom: 12px;
+}
+
+.footer-2nd-half img {
+  width: 40px;
+  height: 20px;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.footer-socials a img {
+  width: 40px;
+  height: 40px;
+  filter: invert(100%);
+  cursor: pointer;
+}
