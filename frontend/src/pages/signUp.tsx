@@ -1,29 +1,61 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
-import signUp_png from "../assets/signUp-picture.png";
+import { Link, useNavigate } from "react-router-dom";
+import signUpPicture from "../assets/signUp-picture.png";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, reset } from "../features/auth/authSlice";
+import { RootState } from "../app/store";
 import "../styles/signUp.css";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
+import Spinner from "../components/spnner";
 
-interface IFormInput {
+interface FormInput {
   username: string;
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  re_password: string;
 }
 
-function signUp() {
+function SignUp() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+    watch,
+  } = useForm<FormInput>();
+  const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
+
+  const { isLoading, isSuccess, isErrored, message, user } = useSelector((state: RootState) => state.auth);
+
+  const password = watch("password");
+  const re_password = watch("re_password");
+
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    if (password !== re_password) {
+      alert("Passwords do not match");
+    } else {
+      dispatch(registerUser(data));
+    }
+  };
+
+  useEffect(() => {
+    if (isErrored) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      navigate("/");
+      toast.success("Account created successfully");
+    }
+    dispatch(reset());
+  }, [isErrored, isSuccess, user, message, navigate, dispatch]);
 
   return (
     <div className="signUp-container">
       <div className="signUp-first-half">
-        <img src={signUp_png} alt="" />
+        <img src={signUpPicture} alt="" />
       </div>
       <div className="signUp-second-half">
         <div>
@@ -37,8 +69,9 @@ function signUp() {
               <p>OR</p>
               <div className="right-line"></div>
             </div>
-
+            
             <div>
+            {isLoading && <Spinner/>}
               <form onSubmit={handleSubmit(onSubmit)}>
                 <input
                   {...register("username", { required: true })}
@@ -47,15 +80,15 @@ function signUp() {
                 />
 
                 <input
-                  {...register("firstName", { required: true })}
+                  {...register("first_name", { required: true })}
                   placeholder="First Name"
-                  style={{ borderColor: errors.firstName ? "red" : "" }}
+                  style={{ borderColor: errors.first_name ? "red" : "" }}
                 />
 
                 <input
-                  {...register("lastName", { required: true })}
+                  {...register("last_name", { required: true })}
                   placeholder="Last Name"
-                  style={{ borderColor: errors.lastName ? "red" : "" }}
+                  style={{ borderColor: errors.last_name ? "red" : "" }}
                 />
 
                 <input
@@ -71,9 +104,9 @@ function signUp() {
                 />
 
                 <input
-                  {...register("confirmPassword", { required: true })}
+                  {...register("re_password", { required: true })}
                   placeholder="Confirm Password"
-                  style={{ borderColor: errors.confirmPassword ? "red" : "" }}
+                  style={{ borderColor: errors.re_password ? "red" : "" }}
                 />
                 <button type="submit"> Create Now </button>
               </form>
@@ -93,4 +126,4 @@ function signUp() {
   );
 }
 
-export default signUp;
+export default SignUp;

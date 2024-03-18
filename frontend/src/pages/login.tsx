@@ -1,21 +1,47 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import {  useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+
 import login_png from "../assets/login-picture.png";
 import "../styles/login.css";
+import { loginUser, reset } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import Spinner from "../components/spnner";
 
 type Inputs = {
   username: string;
   password: string;
 };
 
-function login() {
+
+function Login() {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
+
+  const { isLoading, isSuccess, isErrored, message, user } = useSelector((state: RootState) => state.auth);
+
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+      dispatch(loginUser(data));
+
+  };
+
+  useEffect(() => {
+    if (isErrored) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [isErrored, isSuccess, user, message, navigate, dispatch]);
+
   return (
     <div className="login-container">
       <div className="login-first-half">
@@ -32,6 +58,7 @@ function login() {
             <div className="right-line"></div>
           </div>
           <div>
+            {isLoading && <Spinner />}
             <form onSubmit={handleSubmit(onSubmit)}>
               <input
                 {...register("username", { required: true })}
@@ -64,4 +91,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;

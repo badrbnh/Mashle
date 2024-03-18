@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from os import getenv as env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,7 +52,6 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
     ],
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -59,13 +59,13 @@ REST_FRAMEWORK = {
 }
 
 #JWT
-SIMPLE_JWT = {
-   'AUTH_HEADER_TYPES': ('JWT'),
-}
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'AUTH_TOKEN_CLASSES': ("rest_framework_simplejwt.tokens.AccessToken")
 }
 
 #Caching
@@ -87,11 +87,24 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework_swagger',
     'rest_framework_simplejwt',
+    'corsheaders',
     'djoser',
     'django_bleach',
     'drf_yasg',
-    "MashleAPI"
+    'dbbackup',
+    "MashleAPI",
+    "MashleBot"
 ]
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': 'backup/dir/'}
+DBBACKUP_GPG_RECIPIENT = 'Badreddine'
+DBBACKUP_GPG_RECIPIENT_PUBLIC_KEY= 'public_key.asc'
+
+DJOSER = {
+    'USER_CREATE_PASSWORD_RETYPE': True,
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -101,8 +114,16 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # 👇 Add this line here
+    'corsheaders.middleware.CorsMiddleware',
+    # Add above line just before this line 👇
+    'django.middleware.common.CommonMiddleware',
 ]
-
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',  # Add other frontend development URLs 
+] 
 ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [

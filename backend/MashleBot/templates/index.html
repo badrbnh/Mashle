@@ -1,0 +1,34 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Demo</title>
+</head>
+<body>
+    <h1>Chatbot Demo</h1>
+    <div>
+        <div id="chatbot">
+            <p class="botText">Hi there</p> <!-- Close the <p> tag properly -->
+        </div>
+        <div id="userInput">
+            <input id="textInput" type="text" name="userMessage" placeholder="Type your message...">
+            <button type="submit" onclick="getUserResponse()">Send</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function getUserResponse(){
+            let userText = $("#textInput").val();
+            let userHtml = '<p class="userText"><span>' + userText + '</span></p>';
+            $("#textInput").val("");
+            $("#chatbot").append(userHtml);
+
+            $.get("/get", {userMessage: userText}).done(function(data){  // Update URL path to /chat/get
+                let botHtml = '<p class="botText">ChatBot: <span>' + data + '</span></p>';
+                $("#chatbot").append(botHtml);
+            });
+        }
+    </script>
+</body>
+</html>
