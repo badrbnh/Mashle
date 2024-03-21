@@ -24,7 +24,7 @@ function Login() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
-  const { isLoading, isSuccess, isErrored, message, user } = useSelector((state: RootState) => state.auth);
+  const { isLoading, isSuccess, isErrored, message, user } = useSelector((state: any) => state.auth);
 
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -35,11 +35,11 @@ function Login() {
   useEffect(() => {
     if (isErrored) {
       toast.error(message);
+      dispatch(reset());
     }
     if (isSuccess || user) {
       navigate("/");
     }
-    dispatch(reset());
   }, [isErrored, isSuccess, user, message, navigate, dispatch]);
 
   return (

@@ -45,7 +45,7 @@ function SignUp() {
     if (isErrored) {
       toast.error(message);
     }
-    if (isSuccess || user) {
+    if (isSuccess) {
       navigate("/");
       toast.success("Account created successfully");
     }
@@ -99,13 +99,13 @@ function SignUp() {
 
                 <input
                   {...register("password", { required: true })}
-                  placeholder="Passowrd"
+                  placeholder="Passowrd" type="password"
                   style={{ borderColor: errors.password ? "red" : "" }}
                 />
 
                 <input
                   {...register("re_password", { required: true })}
-                  placeholder="Confirm Password"
+                  placeholder="Confirm Password" type="password"
                   style={{ borderColor: errors.re_password ? "red" : "" }}
                 />
                 <button type="submit"> Create Now </button>

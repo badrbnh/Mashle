@@ -1,2 +1,5 @@
 primary = #d17801
 secondary = #0e1b3b
+tertiary = #fdebd4
+quaternary = 4b4b4b
+quinary = #cccccc

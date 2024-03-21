@@ -1,9 +1,13 @@
+import os
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User, Group
 from datetime import datetime
+from django.views import View
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser
+from backend import settings
 from .models import Category, MenuItems, Cart, CartItems, Order, OrderItems, Table, Reservation, Reviews
 from .serializers import CategorySerializer, MenuItemSerializer, CartItemsSerializer,\
     CartSerializer, OrderSerializer, OrderItemsSerializer, ReservationSerializer,\
@@ -26,7 +30,7 @@ class ManagerPermission(BasePermission, ManagerPermissionMixin):
 class CategoryView(generics.ListCreateAPIView, ManagerPermissionMixin):
     """API that lists and creates Categories."""
     
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializer
 
     def create(self, request, *args, **kwargs):
@@ -58,7 +62,7 @@ class SingleCategoryView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissio
 class MenuItemsView(generics.ListCreateAPIView, ManagerPermissionMixin):
     """API that lists and creates Menu items."""
 
-    queryset = MenuItems.objects.all()
+    queryset = MenuItems.objects.all().order_by('id')
     serializer_class = MenuItemSerializer
     search_fields = ['category__title']
     ordering_fields = ['price']
@@ -69,6 +73,7 @@ class MenuItemsView(generics.ListCreateAPIView, ManagerPermissionMixin):
             return Response({"message": "You are not authorized for this action"}, status=status.HTTP_401_UNAUTHORIZED)
         super().create(request, *args, **kwargs)
         return Response({"message": "ok"}, status=status.HTTP_200_OK)
+
 
 class MenuItemView(generics.RetrieveUpdateDestroyAPIView, ManagerPermissionMixin):
     """API that retrieves, updates, and destroys Menu items."""

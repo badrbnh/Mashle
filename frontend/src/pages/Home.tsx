@@ -1,5 +1,6 @@
 import "../styles/home.css";
 import pizza from "../assets/pizza.png";
+import Menu from "./Menu";
 const home = () => {
   return (
     <>
@@ -35,6 +36,7 @@ const home = () => {
         <p>Achieved national and international awards.</p>
       </div>
     </div>
+    <Menu></Menu>
     </>
   );
 };

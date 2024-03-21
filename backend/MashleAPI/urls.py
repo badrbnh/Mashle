@@ -1,10 +1,14 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
+
+
 from . import views
 
 urlpatterns = [
-    path("categories", views.CategoryView.as_view(), name="categories"),
+    path("categories/", views.CategoryView.as_view(), name="categories"),
     path("categories/<int:pk>", views.SingleCategoryView.as_view(), name="category"),
-    path("menu-items", views.MenuItemsView.as_view(), name="menu-items"),
+    path("menu-items/", views.MenuItemsView.as_view(), name="menu-items"),
     path("menu-items/<int:pk>", views.MenuItemView.as_view(), name="menu-item"),
     path("carts", views.CartView.as_view(), name="carts"),
     path("cart-items", views.CartItemsView.as_view(), name="cart-items"),
@@ -32,3 +36,6 @@ urlpatterns = [
     path('groups/cashier/users', views.CashierViewSet.as_view(
         {'get': 'list', 'post': 'create', 'delete': 'destroy'})),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

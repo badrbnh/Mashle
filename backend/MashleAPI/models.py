@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from uuid import uuid4
 
 class Category(models.Model):
     """Model representing a category for menu items."""
@@ -7,6 +8,12 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def generate_filename(instance, filename):
+    extension = filename.split('.')[-1]
+    new_filename = f"{uuid4()}.{extension}"
+    return f"static/assets/{new_filename}"
 
 class MenuItems(models.Model):
     """Model representing menu items."""
@@ -18,6 +25,7 @@ class MenuItems(models.Model):
 
     title = models.CharField(max_length=255, verbose_name="Title", unique=True, db_index=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Price", db_index=True)
+    image = models.ImageField(upload_to=generate_filename)
     description = models.TextField(verbose_name="Description")
     stock = models.CharField(max_length=15, choices=STOCK_CHOICES, default='In Stock', verbose_name="Stock")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name="Category")
