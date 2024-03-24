@@ -36,13 +36,11 @@ const CategoriesList = () => {
     fetcher
   );
 
-  // Handle error state
-  if (error) return <div>Failed to load</div>;
 
-  // Handle loading state
+  if (error) return <div>Failed to load</div>;
   if (isValidating || !apiResponse) return <div>Loading...</div>;
 
-  // Render categories
+
   return (
     <>
       {apiResponse.results.map((category) => (

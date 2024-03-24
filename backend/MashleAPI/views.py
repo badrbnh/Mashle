@@ -8,6 +8,7 @@ from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser
 from backend import settings
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Category, MenuItems, Cart, CartItems, Order, OrderItems, Table, Reservation, Reviews
 from .serializers import CategorySerializer, MenuItemSerializer, CartItemsSerializer,\
     CartSerializer, OrderSerializer, OrderItemsSerializer, ReservationSerializer,\
@@ -107,11 +108,12 @@ class CartView(generics.ListCreateAPIView):
 class CartItemsView(generics.ListCreateAPIView):
     """API that lists and adds items to the cart."""
     serializer_class = CartItemsSerializer
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """Only return the cart items for the current user."""
-        return CartItems.objects.filter(cart__user=self.request.user)
+        return CartItems.objects.filter(cart__user=self.request.user).order_by('id') 
 
 class SingleCartItemsView(generics.RetrieveUpdateDestroyAPIView):
     """API that retrieves, updates, and destroys a single cart item."""

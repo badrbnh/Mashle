@@ -1,6 +1,7 @@
 import "../styles/menu.css";
 import CategoriesList from "../features/api/FullCategoriesService";
 import FullMenuList from "../features/api/FullMenuService";
+import MenuItems from "../components/menuItemComponent";
 
 function Menu() {
   return (
@@ -22,8 +23,9 @@ function Menu() {
           <FullMenuList></FullMenuList>
       </div>
       <div className="dishes-btn-container">
-        <button className="dishes-btn"></button>
+        <button className="dishes-btn">More</button>
       </div>
+      <MenuItems></MenuItems>
     </div>
   );
 }

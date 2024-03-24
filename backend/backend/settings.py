@@ -51,23 +51,24 @@ REST_FRAMEWORK = {
         'user': '1000/min'
     },
 
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-
+        
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
 }
 
 #JWT
 
+#JWT
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-    'AUTH_TOKEN_CLASSES': ("rest_framework_simplejwt.tokens.AccessToken")
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
 #Caching

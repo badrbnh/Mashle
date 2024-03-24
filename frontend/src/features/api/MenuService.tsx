@@ -1,6 +1,8 @@
 import useSWR from "swr";
 import "../../styles/menu.css";
 import bag from "../../assets/shoppingBag.svg";
+import Popup from "reactjs-popup";
+
 const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
 
 // Define the type for the dish object
@@ -9,6 +11,7 @@ interface Dish {
   title: string;
   price: number;
   image: string;
+  description: string;
 }
 
 // Define the type for the API response
@@ -51,7 +54,26 @@ const MenuList = () => {
           <p className="dish-price">{menu.price} DH</p>
           <div className="add-cart-container">
             <img src={bag} alt="" />
-            <button className="add-cart">Add to cart</button>
+            <Popup
+                  trigger={<button className="add-cart">Add to cart</button>}
+                  modal
+                  position="center center"
+                >
+                  <div className="popup-container">
+                    <div className="popup-dish-img">
+                      <img src={`${menu.image}`} alt="" />
+                    </div>
+                    <div className="popup-right-half">
+                    <h1>{menu.title}</h1>
+                    <p className="dish-price">{menu.price} DH</p>
+                    <p>{menu.description}</p>
+                    <div className="popup-btn-cont">
+                    <button className="add-cart">Add to cart</button>
+                    <button className="add-cart">Checkout</button>
+                    </div>
+                    </div>
+                  </div>
+                </Popup>
           </div>
         </div>
       ))}

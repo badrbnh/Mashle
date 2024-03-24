@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth.models import User
 from uuid import uuid4
 
@@ -142,3 +144,10 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"Reservation for {self.user} at {self.table} on {self.date} {self.time}"
+
+
+@receiver(post_save, sender=User)
+def handle_cart(sender, instance, created, **kwargs):
+    """Signal receiver to create cart when user created."""
+    if created:
+        Cart.objects.create(user=instance)
