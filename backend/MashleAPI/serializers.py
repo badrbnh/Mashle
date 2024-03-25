@@ -44,11 +44,13 @@ class CartItemsSerializer(serializers.ModelSerializer):
         queryset=MenuItems.objects.all(),
         write_only=True
     )
+    
     cart_id = serializers.PrimaryKeyRelatedField(
         source='cart',
         queryset=Cart.objects.all(),
         write_only=True
     )
+
 
     def validate(self, attrs):
         # Retrieve the actual menu item price and calculate the total price
@@ -56,13 +58,17 @@ class CartItemsSerializer(serializers.ModelSerializer):
         attrs['unit_price'] = menuitem.price
         attrs['price'] = attrs['unit_price'] * attrs.get('quantity', 1)
         return attrs
+
+
     menuitem = MenuItemSerializer(read_only=True)
+
     class Meta:
         model = CartItems
-        fields = ['user','menuitem', 'cart_id', 'menuitem_id', 'quantity', 'price']
+        fields = ['id','user','menuitem', 'cart_id', 'menuitem_id', 'quantity', 'price']
         extra_kwargs = {
             'price': {'read_only': True}
         }
+
 
 class OrderItemsSerializer(serializers.ModelSerializer):
     """Serializer for OrderItems model."""

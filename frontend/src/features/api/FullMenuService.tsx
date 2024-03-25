@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import useSWR from "swr";
 import "../../styles/menu.css";
 import bag from "../../assets/shoppingBag.svg";
@@ -6,24 +7,134 @@ import fetcher from "../../components/fetcher";
 import "../../styles/order_popup.css";
 import Popup from "reactjs-popup";
 import Spinner from "../../components/spnner";
+import fetchCart from "./fetchCart";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
 
+const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
+  const userJSON = localStorage.getItem("user");
+  if (!userJSON) {
+    throw new Error("User data not found in localStorage.");
+  }
+
+  const user = JSON.parse(userJSON);
+  if (!user.access) {
+    throw new Error("Access token not found in user data.");
+  }
+
+  const accessToken = user.access;
+  try {
+    const item_exist_response = await fetch(`${BACKEND_URL}/cart-items/?search=${itemID}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+      
+    if (!item_exist_response.ok) {
+      throw new Error("Failed to check item existence in cart.");
+    }
+      
+    const item_exist = await item_exist_response.json();
+    if (item_exist.results.length > 0) {
+      // Item exists in the cart, show a message
+      toast.warn("Item is already in the cart.", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    const response = await fetch(`${BACKEND_URL}/cart-items/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        menuitem_id: itemID,
+        cart_id: cartID
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to add item to cart.");
+    }
+
+    toast.success("Item added to cart!", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  } catch (error) {
+    toast.error("Failed to add item to cart. Please try again later.", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+    console.error("Error adding item to cart:", error);
+  }
+};
+
 const FullMenuList = () => {
   const { searchQuery } = useSearchContext();
+  const { data: apiResponse, error, isValidating } = useSWR(
+    `${BACKEND_URL}/menu-items/?search=${searchQuery}`,
+    fetcher
+  );
 
-  const {
-    data: apiResponse,
-    error,
-    isValidating,
-  } = useSWR(`${BACKEND_URL}/menu-items/?search=${searchQuery}`, fetcher);
+  const [cartID, setCartID] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchAndSetCartID = async () => {
+      try {
+        const fetchedCartID = await fetchCart();
+        setCartID(fetchedCartID);
+      } catch (error) {
+        console.error("Error fetching cart:", error);
+      }
+    };
+    fetchAndSetCartID();
+  }, []);
+
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+
+  const handleAddToCart = async (itemID: number) => {
+    setIsAddingToCart(true);
+    try {
+      if (cartID === null) {
+        throw new Error("Cart ID not fetched yet.");
+      }
+      await addItemToCart(itemID, cartID);
+
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      // Handle error, e.g., show an error message
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
 
   return (
     <>
+      
       {error && <div>Failed to load</div>}
       {(isValidating || !apiResponse) && <Spinner />}
       {apiResponse && (
         <>
+
           {apiResponse.results.map((menu: any) => (
             <div className="dish-container" key={menu.id}>
               <div className="dish-img">
@@ -43,19 +154,26 @@ const FullMenuList = () => {
                       <img src={`${menu.image}`} alt="" />
                     </div>
                     <div className="popup-right-half">
-                    <h1>{menu.title}</h1>
-                    <p className="dish-price">{menu.price} DH</p>
-                    <p>{menu.description}</p>
-                    <div className="popup-btn-cont">
-                    <button className="add-cart">Add to cart</button>
-                    <button className="add-cart">Checkout</button>
-                    </div>
+                      <h1>{menu.title}</h1>
+                      <p className="dish-price">{menu.price} DH</p>
+                      <p>{menu.description}</p>
+                      <div className="popup-btn-cont">
+                        <button
+                          className="add-cart"
+                          onClick={() => handleAddToCart(menu.id)}
+                          disabled={isAddingToCart}
+                        >
+                          {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
+                        </button>
+                        <button className="add-cart">Checkout</button>
+                      </div>
                     </div>
                   </div>
                 </Popup>
               </div>
             </div>
           ))}
+          <ToastContainer />
         </>
       )}
     </>

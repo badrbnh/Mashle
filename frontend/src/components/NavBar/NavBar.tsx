@@ -7,7 +7,9 @@ import SearchComponent from "../search";
 import logo from "../../assets/logo.png";
 import "./NavBar.css";
 import cart from "../../assets/cart.svg";
+import Popup from "reactjs-popup";
 import userIcon from "../../assets/add-user-male.svg";
+import MenuItems from "../menuItemComponent";
 
 interface NavBarProps {
   links: string[];
@@ -58,7 +60,13 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
       {user ? (
         <div className="nav-addOns">
           <SearchComponent/>
-          <img src={cart} alt="cart" className="cart-icon" />
+          <Popup
+                  trigger={<button className="add-cart"><img src={cart} alt="" /></button>}
+                  modal
+                  position="center center"
+                >
+                  <MenuItems></MenuItems>
+          </Popup>
           <NavLink to={"/"}>
             <img
               src={userIcon}

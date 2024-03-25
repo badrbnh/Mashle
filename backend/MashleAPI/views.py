@@ -108,12 +108,18 @@ class CartView(generics.ListCreateAPIView):
 class CartItemsView(generics.ListCreateAPIView):
     """API that lists and adds items to the cart."""
     serializer_class = CartItemsSerializer
-    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """Only return the cart items for the current user."""
-        return CartItems.objects.filter(cart__user=self.request.user).order_by('id') 
+        queryset = CartItems.objects.filter(cart__user=self.request.user).order_by('id')  # Start with the base queryset
+
+        search_term = self.request.query_params.get('search')
+        if search_term:
+            queryset = queryset.filter(menuitem__id__icontains=search_term)  # Apply filtering if a search term exists
+
+        return queryset
+
 
 class SingleCartItemsView(generics.RetrieveUpdateDestroyAPIView):
     """API that retrieves, updates, and destroys a single cart item."""
