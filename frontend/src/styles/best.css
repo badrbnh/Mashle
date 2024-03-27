@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+.best-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fdebd4;
+    font-family: 'Poppins', sans-serif;
+    color: #4b4b4b;
+}
+.best-container .best-left {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 120px;
+    height: 100%;
+
+}
+
+.best-container .best-left img {
+    rotate: 90deg;
+    width: 460px;
+    height: 360px;
+    border-radius: 12px;
+    margin-left: 36px;
+    
+}
+
+.best-container .best-left p {
+    font-size: 20px;
+    margin-left: 80px;
+}
+
+.best-container .best-right {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: flex-end;
+    float: right;
+    gap: 60px;
+    direction: rtl;
+    padding: 80px 80px 0 0;
+}
+
+
+.best-container .best-right .best-desc-container{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.best-container .best-right .best-notice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: black;
+    width: 160px;
+    height: 36px;
+    border-left: 2px solid #d17801;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-right: 2px solid #d17801;
+    border-top-right-radius: 16px;
+    background-color: #f9c480;
+}
+
+.best-container .best-right .best-desc {
+    font-size: 50px;
+    line-height: 54px;
+    width: 70%;
+}
+
+.best-container .best-right .best-desc span {
+    font-weight: 600;
+}
+
+.best-container .best-right button {
+    border: none;
+    background-color: #d17801;
+    border-radius: 20px;
+    width: 180px;
+    height: 44px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.best-container .best-right button:hover {
+    background-color: #da8d29;
+}
+
+.best-container .best-right .best-chef-img {
+    display: flex;
+    justify-content: center;
+}
+
+.best-container .best-right img {
+
+    width: 400px;
+    height: 100%;
+}

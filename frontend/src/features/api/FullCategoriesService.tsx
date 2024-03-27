@@ -4,21 +4,20 @@ import "../../styles/menu.css";
 
 const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
 
-// Define the type for the category object
+
 interface Category {
   id: number;
   title: string;
 }
 
-// Define the type for the API response
 interface ApiResponse {
   count: number;
   next: string | null;
   previous: string | null;
-  results: Category[]; // Array of Category objects
+  results: Category[];
 }
 
-// Function to fetch data from the backend
+
 const fetcher = async (url: string): Promise<ApiResponse> => {
   const response = await fetch(url);
   if (!response.ok) {
@@ -27,9 +26,9 @@ const fetcher = async (url: string): Promise<ApiResponse> => {
   return response.json();
 };
 
-// Component to fetch and display categories using SWR
+
 const CategoriesList = () => {
-  // Fetch categories data using SWR
+
   const {
     data: apiResponse,
     error,

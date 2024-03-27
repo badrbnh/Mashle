@@ -1,6 +1,7 @@
 import "../styles/menu.css";
 import CategoriesList from "../features/api/CategoryService";
 import MenuList from "../features/api/MenuService";
+import { NavLink } from "react-router-dom";
 
 function Menu() {
   return (
@@ -22,7 +23,7 @@ function Menu() {
           <MenuList></MenuList>
       </div>
       <div className="dishes-btn-container">
-        <button className="dishes-btn">Explore More</button>
+        <NavLink to='/menu'><button className="dishes-btn">Explore More</button></NavLink>
       </div>
     </div>
   );

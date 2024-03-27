@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import useSWR from "swr";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../../styles/menu.css";
 import bag from "../../assets/shoppingBag.svg";
 import { useSearchContext } from "../../components/SearchContext";
@@ -8,8 +10,6 @@ import "../../styles/order_popup.css";
 import Popup from "reactjs-popup";
 import Spinner from "../../components/spnner";
 import fetchCart from "./fetchCart";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
 
@@ -121,7 +121,6 @@ const FullMenuList = () => {
 
     } catch (error) {
       console.error("Error adding item to cart:", error);
-      // Handle error, e.g., show an error message
     } finally {
       setIsAddingToCart(false);
     }

@@ -1,5 +1,5 @@
 import useSWR, { mutate } from "swr";
-import "./cart.css";
+import "../styles/cart.css";
 import fetchCart from "../features/api/fetchCart";
 import { useEffect, useState } from "react";
 import trash from "../assets/trash.svg";

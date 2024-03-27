@@ -13,9 +13,10 @@ import MenuItems from "../menuItemComponent";
 
 interface NavBarProps {
   links: string[];
+  to: string[]; // Assuming this is supposed to be an array of URLs corresponding to the links
 }
 
-const NavBar: React.FC<NavBarProps> = ({ links }) => {
+const NavBar: React.FC<NavBarProps> = ({ links, to }) => { // Destructure 'to' prop
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.auth.user);
@@ -33,6 +34,7 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
     color: "#d17801",
     paddingBottom: "38px",
   };
+
   function handleClick(index: number) {
     setSelectedIndex(index);
     console.log(`${links[index]}`);
@@ -43,15 +45,15 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
       <div className="links-container">
         <img src={logo} alt="logo" className="logo" />
         <ul className="nav-links" style={{ margin: 0 }}>
-          {links.map((link, index) => (
+          {links.map((link, index) => ( // Removed 'to' from map parameters
             <li key={index}>
-              <a
-                href="#"
+              <NavLink
                 onClick={() => handleClick(index)}
                 style={selectedIndex === index ? activeStyle : {}}
+                to={to[index]} 
               >
                 {link}
-              </a>
+              </NavLink>
             </li>
           ))}
         </ul>
@@ -59,13 +61,13 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
 
       {user ? (
         <div className="nav-addOns">
-          <SearchComponent/>
+          <SearchComponent />
           <Popup
-                  trigger={<button className="add-cart"><img src={cart} alt="" /></button>}
-                  modal
-                  position="center center"
-                >
-                  <MenuItems></MenuItems>
+            trigger={<button className="add-cart"><img src={cart} alt="" /></button>}
+            modal
+            position="center center"
+          >
+            <MenuItems />
           </Popup>
           <NavLink to={"/"}>
             <img
@@ -78,7 +80,7 @@ const NavBar: React.FC<NavBarProps> = ({ links }) => {
         </div>
       ) : (
         <>
-          <SearchComponent></SearchComponent>
+          <SearchComponent />
           <div className="login-signup-container">
             <NavLink to={"/login"} className={"login-btn"}>
               Log in

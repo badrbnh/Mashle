@@ -6,6 +6,7 @@ import Home from "./pages/Home"; // Assuming your component file is named Home.t
 import Login from "./pages/login";
 import Register from "./pages/signUp";
 import Menu from "./pages/FullMenu";
+import AboutUs from "./pages/AboutUs";
 import { SearchProvider } from "./components/SearchContext";
 
 const App: React.FC = () => {
@@ -22,6 +23,7 @@ const App: React.FC = () => {
                 "Contact us",
                 "Locations",
               ]}
+              to={["/", "/menu", "/about", "/contact", "/locations"]}
             />
           </header>
           <main>
@@ -30,6 +32,7 @@ const App: React.FC = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/menu" element={<Menu />} />
+              <Route path="/about" element={<AboutUs />} />
             </Routes>
           </main>
           <Footer />
