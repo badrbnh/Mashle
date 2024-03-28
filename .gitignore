@@ -128,6 +128,8 @@ ENV/
 env.bak/
 venv.bak/
 
+backend/static/
+
 # Spyder project settings
 .spyderproject
 .spyproject
