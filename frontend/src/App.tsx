@@ -7,6 +7,7 @@ import Login from "./pages/login";
 import Register from "./pages/signUp";
 import Menu from "./pages/FullMenu";
 import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
 import { SearchProvider } from "./components/SearchContext";
 
 const App: React.FC = () => {
@@ -33,6 +34,7 @@ const App: React.FC = () => {
               <Route path="/register" element={<Register />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/contact" element={<ContactUs />} />
             </Routes>
           </main>
           <Footer />
