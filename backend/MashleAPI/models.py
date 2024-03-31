@@ -62,7 +62,7 @@ class CartItems(models.Model):
 
     class Meta:
         verbose_name_plural = "Cart Items"
-        unique_together = ['cart', 'menuitem']  # Assuming a menu item can appear only once in a cart
+        unique_together = ['cart', 'menuitem']
 
 class Order(models.Model):
     """Model representing an order."""

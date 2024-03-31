@@ -13,8 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-from os import getenv as env
+from os import environ as env
+from dotenv import load_dotenv
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -127,6 +129,9 @@ CORS_ORIGIN_WHITELIST = [
 ]
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:5173']
 ROOT_URLCONF = "backend.urls"
+
+PAYPAL_CLIENT_ID = env.get('PAYPAL_CLIENT_ID')
+PAYPAL_SECRET = env.get('PAYPAL_SECRET')
 
 TEMPLATES = [
     {

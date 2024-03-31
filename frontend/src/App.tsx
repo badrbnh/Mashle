@@ -8,6 +8,7 @@ import Register from "./pages/signUp";
 import Menu from "./pages/FullMenu";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
+import Checkout from "./pages/Checkout";
 import { SearchProvider } from "./components/SearchContext";
 
 const App: React.FC = () => {
@@ -35,6 +36,7 @@ const App: React.FC = () => {
               <Route path="/menu" element={<Menu />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<ContactUs />} />
+              <Route path="/checkout" element={<Checkout />} />
             </Routes>
           </main>
           <Footer />

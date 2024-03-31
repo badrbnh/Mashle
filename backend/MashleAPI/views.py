@@ -7,6 +7,10 @@ from django.views import View
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser
+import paypalrestsdk
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from backend import settings
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Category, MenuItems, Cart, CartItems, Order, OrderItems, Table, Reservation, Reviews
@@ -366,3 +370,11 @@ class CashierViewSet(viewsets.ViewSet):
         dc = Group.objects.get(name="Cashier")
         dc.user_set.remove(user)
         return Response({"message": "user removed from the Cashier group"}, 200)
+    
+#paypal views
+
+paypalrestsdk.configure({
+    "mode": "sandbox",
+    "client_id": settings.PAYPAL_CLIENT_ID,
+    "client_secret": settings.PAYPAL_SECRET,
+})

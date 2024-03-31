@@ -97,7 +97,6 @@ class OrderSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         order_items = representation['order_items']
 
-        # Calculate the total based on order_items
         total_price = sum(Decimal(item['price']) for item in order_items)
         representation['total'] = total_price
 
