@@ -7,11 +7,6 @@ from django.views import View
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser
-import paypalrestsdk
-from django.conf import settings
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from backend import settings
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Category, MenuItems, Cart, CartItems, Order, OrderItems, Table, Reservation, Reviews
 from .serializers import CategorySerializer, MenuItemSerializer, CartItemsSerializer,\
@@ -116,11 +111,11 @@ class CartItemsView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         """Only return the cart items for the current user."""
-        queryset = CartItems.objects.filter(cart__user=self.request.user).order_by('id')  # Start with the base queryset
+        queryset = CartItems.objects.filter(cart__user=self.request.user).order_by('id')
 
         search_term = self.request.query_params.get('search')
         if search_term:
-            queryset = queryset.filter(menuitem__id__icontains=search_term)  # Apply filtering if a search term exists
+            queryset = queryset.filter(menuitem__id__icontains=search_term)
 
         return queryset
 
@@ -373,8 +368,4 @@ class CashierViewSet(viewsets.ViewSet):
     
 #paypal views
 
-paypalrestsdk.configure({
-    "mode": "sandbox",
-    "client_id": settings.PAYPAL_CLIENT_ID,
-    "client_secret": settings.PAYPAL_SECRET,
-})
+
