@@ -1,13 +1,9 @@
 import os
-from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User, Group
-from datetime import datetime
-from django.views import View
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission, IsAdminUser
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Category, MenuItems, Cart, CartItems, Order, OrderItems, Table, Reservation, Reviews
 from .serializers import CategorySerializer, MenuItemSerializer, CartItemsSerializer,\
     CartSerializer, OrderSerializer, OrderItemsSerializer, ReservationSerializer,\
@@ -365,7 +361,3 @@ class CashierViewSet(viewsets.ViewSet):
         dc = Group.objects.get(name="Cashier")
         dc.user_set.remove(user)
         return Response({"message": "user removed from the Cashier group"}, 200)
-    
-#paypal views
-
-
