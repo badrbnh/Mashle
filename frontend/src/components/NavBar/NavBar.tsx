@@ -13,16 +13,16 @@ import MenuItems from "../menuItemComponent";
 
 interface NavBarProps {
   links: string[];
-  to: string[]; // Assuming this is supposed to be an array of URLs corresponding to the links
+  to: string[];
 }
 
-const NavBar: React.FC<NavBarProps> = ({ links, to }) => { // Destructure 'to' prop
+const NavBar: React.FC<NavBarProps> = ({ links, to }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.auth.user);
 
   const handleLogout = () => {
-    dispatch(logoutUser() as any); // Type assertion to 'any'
+    dispatch(logoutUser() as any);
     dispatch(reset());
     toast.success("Logged out successfully");
     navigate("/");
@@ -45,7 +45,7 @@ const NavBar: React.FC<NavBarProps> = ({ links, to }) => { // Destructure 'to' p
       <div className="links-container">
         <img src={logo} alt="logo" className="logo" />
         <ul className="nav-links" style={{ margin: 0 }}>
-          {links.map((link, index) => ( // Removed 'to' from map parameters
+          {links.map((link, index) => (
             <li key={index}>
               <NavLink
                 onClick={() => handleClick(index)}

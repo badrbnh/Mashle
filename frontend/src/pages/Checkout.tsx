@@ -1,11 +1,13 @@
-import Progress from "../components/checkout/checkoutProgress";
-import PersonalDetails from "../components/checkout/checkoutPersonalDetails";
+import React from "react";
+import CheckoutContent from "../components/checkout/CheckoutContent";
+import { CheckoutPhaseProvider } from '../components/checkout/CheckoutPhaseContext';
 
-export default function checkout() {
-  return (
-    <>
-    <Progress />
-    <PersonalDetails />
-    </>
-  )
+const Checkout: React.FC = () => {
+    return (
+        <CheckoutPhaseProvider>
+            <CheckoutContent />
+        </CheckoutPhaseProvider>
+    )
 }
+
+export default Checkout;

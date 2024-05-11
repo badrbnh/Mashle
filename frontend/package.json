@@ -23,6 +23,7 @@
     "react-select-country-list": "^2.2.3",
     "react-toastify": "^10.0.5",
     "reactjs-popup": "^2.0.6",
+    "stripe": "^15.3.0",
     "swr": "^2.2.5"
   },
   "devDependencies": {

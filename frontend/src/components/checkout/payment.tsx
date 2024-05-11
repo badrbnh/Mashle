@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import fetchCart from "../features/api/fetchCart";
+import fetchCart from "../../features/api/fetchCart";
 import useSWR from "swr";
-
-const API_URL = 'http://localhost:8000';
-const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
 
 interface CartItem {
   id: number;
@@ -34,6 +31,9 @@ interface ApiResponse {
   results: CartItem[];
 }
 
+const API_URL = "http://localhost:8000";
+const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
+
 const Payment: React.FC = () => {
   const [cartID, setCartID] = useState<number | null>(null);
   const [localCartItems, setLocalCartItems] = useState<CartItem[]>([]);
@@ -50,19 +50,18 @@ const Payment: React.FC = () => {
     fetchAndSetCartID();
   }, []);
 
+  const userJSON = localStorage.getItem("user");
+  if (!userJSON) {
+    throw new Error("User data not found in localStorage.");
+  }
+
+  const user = JSON.parse(userJSON);
+  if (!user.access) {
+    throw new Error("Access token not found in user data.");
+  }
+
+  const accessToken = user.access;
   const fetcher = async (url: string): Promise<ApiResponse> => {
-    const userJSON = localStorage.getItem("user");
-    if (!userJSON) {
-      throw new Error("User data not found in localStorage.");
-    }
-
-    const user = JSON.parse(userJSON);
-    if (!user.access) {
-      throw new Error("Access token not found in user data.");
-    }
-
-    const accessToken = user.access;
-
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -89,7 +88,6 @@ const Payment: React.FC = () => {
   }, [apiResponse]);
 
   useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
 
     if (query.get("success")) {
@@ -97,14 +95,37 @@ const Payment: React.FC = () => {
     }
 
     if (query.get("canceled")) {
-      console.log(
-        "Order canceled -- continue to shop around and checkout when you're ready."
-      );
+      console.log("Order canceled -- continue to shop around and checkout when you're ready.");
     }
   }, []);
 
-  if (error) return <div>Failed to load</div>;
 
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(`${API_URL}/api/v2/payment/create-checkout-session/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`,
+        },
+        mode: 'no-cors',
+        
+      });
+      if (!response.ok) {
+        throw new Error('Failed to initiate checkout process');
+      }
+
+      console.log('Checkout process initiated successfully');
+    } catch (error) {
+      console.error('Error initiating checkout process:', error);
+    }
+  };
+
+
+
+  if (error) return <div>Error: {error.message}</div>;
   if (isValidating || !apiResponse) return <div>Loading...</div>;
 
   let subtotal = 0;
@@ -112,7 +133,7 @@ const Payment: React.FC = () => {
     subtotal += parseFloat(cart.price.toString());
   });
   const total = subtotal;
-  
+
   return (
     <section>
       <div>
@@ -120,13 +141,10 @@ const Payment: React.FC = () => {
           <p key={index}>{cart.menuitem.title}</p>
         ))}
       </div>
-    <form action={`${API_URL}/api/v2/stripe/create-checkout-session/`} method="POST">
-      <button type="submit">
-        Checkout
-      </button>
-    </form>
-  </section>
-
+      <form method="POST" onSubmit={onSubmit}>
+        <button type="submit">Checkout</button>
+      </form>
+    </section>
   );
 };
 

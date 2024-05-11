@@ -1,33 +1,27 @@
-import './checkoutProgress.css';
-import dot from '../../assets/dot.svg';
-import check from '../assets/check.svg';
+import React from "react";
+import "./CheckoutProgress.css";
+import dot from "../../assets/dot.svg";
+import check from "../../assets/check.svg";
+import { useCheckoutPhase } from "./CheckoutPhaseContext";
 
-
-function Progress() {
+const Progress: React.FC = ({}) => {
+  const phases = ["Personal details", "Payment details", "Completion"];
+  const { currentPhase } = useCheckoutPhase();
+  console.log(currentPhase)
   return (
     <div className="checkout-container">
-      <div className='checkout-phase-container'>
-        <div className='checkout-phase'>
-            <div className='phase-check'> <img src={dot} alt="" /></div>
-            <p>Personal details</p>
-        </div>
-        <div className='phase-connect'></div>
-        <div className='checkout-phase'>
-            <div className='phase-check'></div>
-            <p>Payment details</p>
-        </div>
-        <div className='phase-connect'></div>
-        <div className='checkout-phase'>
-            <div className='phase-check'></div>
-            <p>Completion</p>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div></div>
-          <div></div>
-        </div>
-        <div></div>
+      <div className="checkout-phase-container">
+        {phases.map((phase, index) => (
+          <div key={index}>
+            <div className="checkout-phase">
+              <div className="phase-check">
+                {currentPhase > index ? <img src={check} alt="" /> : <img src={dot} alt="" />}
+              </div>
+              <p>{phase}</p>
+            </div>
+            {index < phases.length - 1 && <div className="phase-connect"></div>}
+          </div>
+        ))}
       </div>
     </div>
   );

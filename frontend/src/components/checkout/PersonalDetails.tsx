@@ -1,11 +1,13 @@
 import { useState } from "react";
 import 'react-phone-number-input/style.css';
+import { useCheckoutPhase } from "./CheckoutPhaseContext";
 import PhoneInput from "react-phone-number-input";
-import "./checkoutPersonalDetails.css";
+import "./PersonalDetails.css";
 
 const BACKEND_URL = "http://127.0.0.1:8000/api/v2/payment/";
 
 export default function PersonalDetails() {
+  const { setCurrentPhase } = useCheckoutPhase();
   const [phoneValue, setPhoneValue] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -51,6 +53,10 @@ export default function PersonalDetails() {
         },
         body: JSON.stringify(formData)
       });
+
+      if (response.ok) {
+        setCurrentPhase((prevPhase) => prevPhase + 1);
+      }
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
