@@ -9,6 +9,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .serializers import PaymentDetailSerializer
 from .models import PaymentDetail
+from MashleAPI.models import CartItems
+from django.views.decorators.csrf import csrf_exempt
 
 load_dotenv()
 
@@ -118,10 +120,16 @@ class StripeCheckoutView(APIView):
         try:
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
-                    {
-                        'price': 'price_1P2ubIIgZh8NvQ08txI2Wd2V',
-                        'quantity': 1,
-                    },
+                            {
+                            "price_data": {
+                                "currency": "usd",
+                                "product_data": {"name": 'pizza' },
+                                "unit_amount": 2000,
+                                "tax_behavior": "exclusive",
+                            },
+                            "adjustable_quantity": {"enabled": True, "minimum": 1, "maximum": 10},
+                            "quantity": 1,
+                            },
                 ],
                 
                 payment_method_types=['card'],
@@ -129,6 +137,8 @@ class StripeCheckoutView(APIView):
                 success_url=SITE_URL + '/?success=true&session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=SITE_URL + '/?canceled=true',
             )
-            return redirect(checkout_session.url)
+            response =  redirect(checkout_session.url)
+            return response
+            
         except:
             return Response({'error': 'somthing went wrong'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
