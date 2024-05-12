@@ -86,4 +86,3 @@ jobs:
         with:
           app-name: 'mashle-backend'
           slot-name: 'Production'
-          
