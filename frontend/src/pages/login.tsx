@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Spinner from "../components/spnner";
 
-type Inputs = {
+export type Inputs = {
   username: string;
   password: string;
 };

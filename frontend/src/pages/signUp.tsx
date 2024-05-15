@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../components/spnner";
 
-interface FormInput {
+export interface FormInput {
   username: string;
   first_name: string;
   last_name: string;

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import fetchCart from "../../features/api/fetchCart";
+import React, { useEffect } from "react";
+// import fetchCart from "../../features/api/fetchCart";
 import useSWR from "swr";
 
 interface CartItem {
@@ -35,20 +35,20 @@ const API_URL = "http://localhost:8000";
 const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
 
 const Payment: React.FC = () => {
-  const [cartID, setCartID] = useState<number | null>(null);
-  const [localCartItems, setLocalCartItems] = useState<CartItem[]>([]);
+  // const [cartID, setCartID] = useState<number | null>(null);
+  // const [localCartItems, setLocalCartItems] = useState<CartItem[]>([]);
 
-  useEffect(() => {
-    const fetchAndSetCartID = async () => {
-      try {
-        const fetchedCartID = await fetchCart();
-        setCartID(fetchedCartID);
-      } catch (error) {
-        console.error("Error fetching cart:", error);
-      }
-    };
-    fetchAndSetCartID();
-  }, []);
+  // useEffect(() => {
+  //   const fetchAndSetCartID = async () => {
+  //     try {
+  //       const fetchedCartID = await fetchCart();
+  //       setCartID(fetchedCartID);
+  //     } catch (error) {
+  //       console.error("Error fetching cart:", error);
+  //     }
+  //   };
+  //   fetchAndSetCartID();
+  // }, []);
 
   const userJSON = localStorage.getItem("user");
   if (!userJSON) {
@@ -81,11 +81,11 @@ const Payment: React.FC = () => {
     isValidating,
   } = useSWR<ApiResponse>(`${BACKEND_URL}/cart-items/`, fetcher);
 
-  useEffect(() => {
-    if (apiResponse) {
-      setLocalCartItems(apiResponse.results);
-    }
-  }, [apiResponse]);
+  // useEffect(() => {
+  //   if (apiResponse) {
+  //     setLocalCartItems(apiResponse.results);
+  //   }
+  // }, [apiResponse]);
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -132,7 +132,7 @@ const Payment: React.FC = () => {
   apiResponse.results.forEach((cart) => {
     subtotal += parseFloat(cart.price.toString());
   });
-  const total = subtotal;
+  // const total = subtotal;
 
   return (
     <section>

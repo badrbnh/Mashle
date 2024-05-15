@@ -8,7 +8,7 @@ const BACKEND_URL = "http://127.0.0.1:8000/api/v2/payment/";
 
 export default function PersonalDetails() {
   const { setCurrentPhase } = useCheckoutPhase();
-  const [phoneValue, setPhoneValue] = useState("");
+  const [phoneValue, setPhoneValue] = useState();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address1, setAddress1] = useState("");

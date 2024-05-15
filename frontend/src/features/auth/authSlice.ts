@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
+import { FormInput } from "../../pages/signUp";
+import { Inputs } from "../../pages/login";
 
 const user = localStorage.getItem("user");
 
@@ -11,7 +13,7 @@ const initialState = {
   message: "",
 };
 
-export const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk<string, FormInput>(
   "auth/registerUser",
   async (userData, thunkAPI) => {
     try {
@@ -28,7 +30,7 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-export const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk<string, Inputs>(
   "auth/loginUser",
   async (userData, thunkAPI) => {
     try {
