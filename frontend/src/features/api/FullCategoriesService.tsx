@@ -2,7 +2,8 @@ import useSWR from "swr";
 import arrow from "../../assets/arrow.svg";
 import "../../styles/menu.css";
 
-const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
+const isDevelopment = import.meta.env.MODE === 'development'
+const baseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD
 
 
 interface Category {
@@ -33,7 +34,7 @@ const CategoriesList = () => {
     data: apiResponse,
     error,
     isValidating,
-  } = useSWR<ApiResponse>(`${BACKEND_URL}/categories/`, fetcher);
+  } = useSWR<ApiResponse>(`${baseUrl}/api/v1/categories/`, fetcher);
 
   if (error) return <div>Failed to load</div>;
   if (isValidating || !apiResponse) return <div>Loading...</div>;

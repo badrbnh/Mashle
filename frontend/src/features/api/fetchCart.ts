@@ -1,4 +1,5 @@
-const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
+const isDevelopment = import.meta.env.MODE === 'development'
+const baseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD
 
 const fetchCart = async (): Promise<number> => {
     const userJSON = localStorage.getItem("user");
@@ -13,7 +14,7 @@ const fetchCart = async (): Promise<number> => {
   
     const accessToken = user.access;
     try {
-      const response = await fetch(`${BACKEND_URL}/carts`, {
+      const response = await fetch(`${baseUrl}/api/v1/carts`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,

@@ -31,8 +31,8 @@ interface ApiResponse {
   results: CartItem[];
 }
 
-const API_URL = "http://localhost:8000";
-const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
+const isDevelopment = import.meta.env.MODE === 'development'
+const baseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD
 
 const Payment: React.FC = () => {
   const [cartID, setCartID] = useState<number | null>(null);
@@ -79,7 +79,7 @@ const Payment: React.FC = () => {
     data: apiResponse,
     error,
     isValidating,
-  } = useSWR<ApiResponse>(`${BACKEND_URL}/cart-items/`, fetcher);
+  } = useSWR<ApiResponse>(`${baseUrl}/api/v1/cart-items/`, fetcher);
 
   useEffect(() => {
     if (apiResponse) {
@@ -104,7 +104,7 @@ const Payment: React.FC = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch(`${API_URL}/api/v2/payment/create-checkout-session/`, {
+      const response = await fetch(`${baseUrl}/api/v2/payment/create-checkout-session/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -4,7 +4,8 @@ import fetchCart from "../features/api/fetchCart";
 import { useEffect, useState } from "react";
 import trash from "../assets/trash.svg";
 
-const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
+const isDevelopment = import.meta.env.MODE === 'development'
+const baseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD
 
 // Define the type for the category object
 interface CartItem {
@@ -83,7 +84,7 @@ const MenuItems = () => {
     data: apiResponse,
     error,
     isValidating,
-  } = useSWR<ApiResponse>(`${BACKEND_URL}/cart-items/`, fetcher);
+  } = useSWR<ApiResponse>(`${baseUrl}/api/v1/cart-items/`, fetcher);
 
   useEffect(() => {
     if (apiResponse) {
@@ -112,7 +113,7 @@ const MenuItems = () => {
 
     const accessToken = user.access;
     try {
-      const response = await fetch(`${BACKEND_URL}/cart-items/${cartItemID}`, {
+      const response = await fetch(`${baseUrl}/api/v1/cart-items/${cartItemID}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -140,7 +141,7 @@ const MenuItems = () => {
 
       // Update SWR cache
       mutate(
-        `${BACKEND_URL}/cart-items/`,
+        `${baseUrl}/api/v1/cart-items/`,
         { ...apiResponse, results: updatedCartItems },
         false
       );
@@ -166,7 +167,7 @@ const MenuItems = () => {
 
     const accessToken = user.access;
     try {
-      const response = await fetch(`${BACKEND_URL}/cart-items/${cartItemID}`, {
+      const response = await fetch(`${baseUrl}/api/v1/cart-items/${cartItemID}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -185,7 +186,7 @@ const MenuItems = () => {
 
       // Update SWR cache
       mutate(
-        `${BACKEND_URL}/cart-items/`,
+        `${baseUrl}/api/v1/cart-items/`,
         { ...apiResponse, results: updatedCartItems },
         false
       );
