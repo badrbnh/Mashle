@@ -1,5 +1,5 @@
 import React from "react";
-import "./CheckoutProgress.css";
+import "./checkoutProgress.css";
 import dot from "../../assets/dot.svg";
 import check from "../../assets/check.svg";
 import { useCheckoutPhase } from "./CheckoutPhaseContext";
