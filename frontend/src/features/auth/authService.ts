@@ -1,10 +1,9 @@
 import axios from "axios";
 
-const isDevelopment = import.meta.env.MODE === 'development'
-const baseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD
+const BACKEND_URL = "http://localhost:8000";
 
-const REGISTER_URL = `${baseUrl}/auth/users/`;
-const LOGIN_URL = `${baseUrl}/auth/jwt/create`;
+const REGISTER_URL = `${BACKEND_URL}/auth/users/`;
+const LOGIN_URL = `${BACKEND_URL}/auth/jwt/create`;
 
 const register = async (userData: any) => {
     const config = {

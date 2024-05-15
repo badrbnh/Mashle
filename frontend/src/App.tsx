@@ -2,13 +2,12 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
-import Home from "./pages/Home"; // Assuming your component file is named Home.tsx
+import Home from "./pages/Home";
 import Login from "./pages/login";
 import Register from "./pages/signUp";
 import Menu from "./pages/FullMenu";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
-import Checkout from "./pages/checkout";
 import { SearchProvider } from "./components/SearchContext";
 
 const App: React.FC = () => {
@@ -36,7 +35,6 @@ const App: React.FC = () => {
               <Route path="/menu" element={<Menu />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/contact" element={<ContactUs />} />
-              <Route path="/checkout" element={<Checkout />} />
             </Routes>
           </main>
           <Footer />
