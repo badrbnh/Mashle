@@ -10,7 +10,8 @@ import "../../styles/menu.css";
 import bag from "../../assets/shoppingBag.svg";
 import Popup from "reactjs-popup";
 
-const BACKEND_URL = "http://127.0.0.1:8000/api/v1";
+const isDevelpment = import.meta.env.MODE === 'development'
+const BASE_URL = isDevelpment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD;
 
 const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
   const userJSON = localStorage.getItem("user");
@@ -25,7 +26,7 @@ const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
 
   const accessToken = user.access;
   try {
-    const item_exist_response = await fetch(`${BACKEND_URL}/cart-items/?search=${itemID}`, {
+    const item_exist_response = await fetch(`${BASE_URL}/api/v1/cart-items/?search=${itemID}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -50,7 +51,7 @@ const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
       return;
     }
 
-    const response = await fetch(`${BACKEND_URL}/cart-items/`, {
+    const response = await fetch(`${BASE_URL}/api/v1/cart-items/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,7 +91,7 @@ const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
 const MenuList = () => {
   const { searchQuery } = useSearchContext();
   const { data: apiResponse, error, isValidating } = useSWR(
-    `${BACKEND_URL}/menu-items/?search=${searchQuery}`,
+    `${BASE_URL}/api/v1/menu-items/?search=${searchQuery}`,
     fetcher
   );
 

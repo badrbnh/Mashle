@@ -4,7 +4,8 @@ import { useCheckoutPhase } from "./CheckoutPhaseContext";
 import PhoneInput from "react-phone-number-input";
 import "./PersonalDetails.css";
 
-const BACKEND_URL = "http://127.0.0.1:8000/api/v2/payment/";
+const isDevelpment = import.meta.env.MODE === 'development'
+const BASE_URL = isDevelpment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD;
 
 export default function PersonalDetails() {
   const { setCurrentPhase } = useCheckoutPhase();
@@ -45,7 +46,7 @@ export default function PersonalDetails() {
 
       const accessToken = user.access;
       
-      const response = await fetch(BACKEND_URL + "current-personal-details/", {
+      const response = await fetch(BASE_URL + "api/v2/payment/current-personal-details/", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
