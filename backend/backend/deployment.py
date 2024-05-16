@@ -22,13 +22,18 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'https://www.chi-kara.tech',
     'https://delightful-island-0e566b303.5.azurestaticapps.net',
 ]
 
 CORS_ORIGIN_WHITELIST = [
+    'https://www.chi-kara.tech',
     'https://delightful-island-0e566b303.5.azurestaticapps.net',
 ]
-CSRF_TRUSTED_ORIGINS = ['https://delightful-island-0e566b303.5.azurestaticapps.net',]
+CSRF_TRUSTED_ORIGINS = [
+    'https://www.chi-kara.tech',
+    'https://delightful-island-0e566b303.5.azurestaticapps.net',
+    ]
 
 
 STORAGES = {
