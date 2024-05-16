@@ -23,9 +23,9 @@ MIDDLEWARE = [
 
 
 CORS_ORIGIN_WHITELIST = [
-    'https://delightful-island-0e566b303.5.azurestaticapps.net/',
+    'https://delightful-island-0e566b303.5.azurestaticapps.net',
 ]
-CSRF_TRUSTED_ORIGINS = ['https://delightful-island-0e566b303.5.azurestaticapps.net/',]
+CSRF_TRUSTED_ORIGINS = ['https://delightful-island-0e566b303.5.azurestaticapps.net',]
 
 
 STORAGES = {
