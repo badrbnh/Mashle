@@ -223,6 +223,7 @@
   .dishes-container-m {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 8px;
     margin: 0 auto;
@@ -233,7 +234,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 172px;
+    justify-content: center;
+    width: 164px;
     height: 200px;
     background-color: #ffffff;
     border-radius: 16px;
