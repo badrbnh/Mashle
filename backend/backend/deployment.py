@@ -66,5 +66,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'media'),
 ]
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'https://mashle-backend.azurewebsites.net/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
