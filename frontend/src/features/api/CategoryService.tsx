@@ -1,9 +1,12 @@
 import useSWR from "swr";
 import arrow from "../../assets/arrow.svg";
 import "../../styles/menu.css";
+import { useMediaQuery } from "@mui/material";
 
-const isDevelpment = import.meta.env.MODE === 'development'
-const BASE_URL = isDevelpment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD;
+const isDevelpment = import.meta.env.MODE === "development";
+const BASE_URL = isDevelpment
+  ? import.meta.env.VITE_API_BASE_URL_LOCAL
+  : import.meta.env.VITE_API_BASE_URL_PROD;
 
 // Define the type for the category object
 interface Category {
@@ -30,11 +33,12 @@ const fetcher = async (url: string): Promise<ApiResponse> => {
 
 // Component to fetch and display categories using SWR
 const CategoriesList = () => {
-  // Fetch categories data using SWR
-  const { data: apiResponse, error, isValidating } = useSWR<ApiResponse>(
-    `${BASE_URL}/api/v1/categories/`,
-    fetcher
-  );
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const {
+    data: apiResponse,
+    error,
+    isValidating,
+  } = useSWR<ApiResponse>(`${BASE_URL}/api/v1/categories/`, fetcher);
 
   // Handle error state
   if (error) return <div>Failed to load</div>;
@@ -45,12 +49,19 @@ const CategoriesList = () => {
   // Render categories
   return (
     <>
-      {apiResponse.results.slice(0, 12).map((category) => (
-        <div className="category" key={category.id}>
-          {category.title}
-          <img src={arrow} alt="" />
-        </div>
-      ))}
+      {apiResponse.results.slice(0, 12).map((category) =>
+        !isMobile ? (
+          <div className="category" key={category.id}>
+            {category.title}
+            <img src={arrow} alt="" />
+          </div>
+        ) : (
+          <div className="category-m" key={category.id}>
+            {category.title}
+            <img src={arrow} alt="" />
+          </div>
+        )
+      )}
     </>
   );
 };

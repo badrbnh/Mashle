@@ -10,4 +10,6 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     # path("", include('MashleBot.urls')),
-] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] 
+urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns +=  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

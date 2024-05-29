@@ -101,3 +101,111 @@ form span {
   align-items: center;
   background-color: #fff8e2;
 }
+
+
+@media screen and (max-width: 600px) {
+  .login-container-m {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+  
+  }
+  
+  .login-first-half-m {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .form-container-m {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 auto;
+  }
+  
+  
+  
+  .google-login-m {
+    border: 1px solid #292828;
+    height: 40px;
+
+  }
+  
+  .facebook-login-m {
+    border: 1px solid #292828;
+    height: 40px;
+    }
+  
+  .splitting-line-m {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+  }
+  .splitting-line-m p {
+    margin: 0 10px;
+    font-size: 12px;
+    color: #292828;
+  }
+  .left-line-m {
+    border: 0.1px solid #cccccc;
+    width: 40%;
+  }
+  .right-line-m {
+    border: 0.1px solid #cccccc;
+    width: 40%;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  
+  form input {
+    border: none;
+    border-radius: 4px;
+    border-bottom: 1px solid #cccccc;
+    outline: none;
+    height: 28px;
+    margin: 8px 0;
+    padding: 0 8px;
+  }
+  
+  form span {
+    font-size: 12px;
+    color: #ee1e1e;
+    margin: 4px 0;
+  }
+  
+  .create-account-m p {
+    margin: 0;
+    font-size: 12px;
+    color: #292828;
+  }
+  
+  .create-account-m p span {
+    margin: 0;
+    font-size: 16px;
+    color: #466fd6;
+  }
+  
+  .signUp-link-m {
+    text-decoration: none;
+  
+  }
+  
+  .login-second-half-m {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff8e2;
+  }
+  
+}

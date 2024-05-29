@@ -123,3 +123,127 @@ form button {
   font-size: 16px;
   color: #466fd6;
 }
+
+@media screen and (max-width: 600px){
+  .signUp-container-m {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+  }
+  
+
+  
+  .signUp-second-half-m {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  .form-container-m {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 36px;
+  
+    margin: 0 auto;
+  }
+  
+  .form-container-m p {
+    margin: 0;
+    font-size: 16px;
+    color: #292828;
+    margin: 8px 0;
+  }
+  
+  .form-container-m h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 800;
+  }
+  
+  .google-signUp-m {
+    border: 1px solid #292828;
+    height: 40px;
+    margin-top: 20px;
+  }
+  
+  .facebook-signUp-m {
+    border: 1px solid #292828;
+    height: 40px;
+    margin-top: 12px;
+  }
+  
+  .splitting-line-m {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  .splitting-line-m p {
+    margin: 0 10px;
+    font-size: 12px;
+    color: #292828;
+  }
+  .left-line-m {
+    border: 0.1px solid #cccccc;
+    width: 40%;
+  }
+  .right-line-m {
+    border: 0.1px solid #cccccc;
+    width: 40%;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  
+  form input {
+    border: none;
+    border-radius: 4px;
+    border-bottom: 1px solid #cccccc;
+    outline: none;
+    height: 28px;
+    margin: 8px 0;
+    padding: 0 8px;
+  }
+  
+  form span {
+    font-size: 12px;
+    color: #ee1e1e;
+    margin: 4px 0;
+  }
+  
+  form button {
+    border: none;
+    border-radius: 4px;
+    background-color: #0e1b3b;
+    color: #f5f5f5;
+    height: 36px;
+    margin: 16px 0;
+    cursor: pointer;
+  }
+  
+  .have-account-m p {
+    margin: 0;
+    font-size: 16px;
+    color: #292828;
+  }
+  
+  .login-link-m {
+      text-decoration: none;
+  }
+  
+  .have-account-m p span {
+    margin: 0;
+    font-size: 16px;
+    color: #466fd6;
+  }
+  
+  
+}

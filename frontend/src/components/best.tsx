@@ -1,11 +1,15 @@
 import '../styles/best.css';
 import chef4 from '../assets/chef4.png';
 import ingredients from '../assets/ingredients.jpg';
+import { useMediaQuery } from '@mui/material';
 
 function best() {
+  const isMobile = useMediaQuery('(max-width: 600px)');
+
+
   return (
-    <div className="best-container">
-      <div className="best-left">
+    <div className={!isMobile ? "best-container" : "best-container-m"}>
+      <div className={!isMobile ? "best-left" : "best-left-m"}>
         <img src={ingredients} alt="" />
         <p>
           With our exquisite dishes and exceptional service, we guarantee an
@@ -13,19 +17,19 @@ function best() {
           us the top choice for food enthusiasts.
         </p>
       </div>
-      <div className="best-right">
-        <div className='best-desc-container'>
-          <div className='best-notice'>
+      <div className={!isMobile ? "best-right" : "best-right-m"}>
+        <div className={!isMobile ? 'best-desc-container' : 'best-desc-container-m'}>
+          <div className={!isMobile ? 'best-notice' : 'best-notice-m'}>
             <p>WE ARE THE BEST</p>
           </div>
-          <p className='best-desc'>
+          <p className={!isMobile ? 'best-desc' : 'best-desc-m'}>
             {" "}
             <span>We crafted</span> delectable <span>and</span> flavorful food{" "}
             <span>using organic</span> ingredients
           </p>
           <button>Order Now</button>
         </div>
-        <div className='best-chef-img'>
+        <div className={!isMobile ? 'best-chef-img' : 'best-chef-img-m'}>
         <img src={chef4} alt="" />
         </div>
       </div>

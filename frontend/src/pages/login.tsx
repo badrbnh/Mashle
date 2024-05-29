@@ -8,6 +8,7 @@ import { loginUser, reset } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Spinner from "../components/spnner";
+import { useMediaQuery } from "@mui/material";
 
 export type Inputs = {
   username: string;
@@ -16,6 +17,8 @@ export type Inputs = {
 
 
 function Login() {
+  const isMobile = useMediaQuery("(max-width: 600px)");
+
   const {
     register,
     handleSubmit,
@@ -43,19 +46,19 @@ function Login() {
   }, [isErrored, isSuccess, user, message, navigate, dispatch]);
 
   return (
-    <div className="login-container">
-      <div className="login-first-half">
-        <div className="form-container">
+    <div className={!isMobile ? "login-container" : "login-container-m"}>
+      <div className={!isMobile ? "login-first-half" : "login-first-half-m"}>
+        <div className={!isMobile ? "form-container" : "form-container-m"}>
           <h1>Login to your account</h1>
           <p>
             continue tracking your progress after logging in to your account.
           </p>
-          <div className="google-login"></div>
-          <div className="facebook-login"></div>
-          <div className="splitting-line">
-            <div className="left-line"></div>
+          <div className={!isMobile ? "google-login" : "google-login-m"}></div>
+          <div className={!isMobile ? "facebook-login" : "facebook-login-m"}></div>
+          <div className={!isMobile ? "splitting-line" : "splitting-line-m"}>
+            <div className={!isMobile ? "left-line" : "left-line-m"}></div>
             <p>OR</p>
-            <div className="right-line"></div>
+            <div className={!isMobile ? "right-line" : "right-line-m"}></div>
           </div>
           <div>
             {isLoading && <Spinner />}
@@ -73,10 +76,10 @@ function Login() {
               />
               <button type="submit">Login now</button>
             </form>
-            <div className="create-account">
+            <div className={!isMobile ? "create-account" : "create-account-m"}>
               <p>
                 Don't have an accont?{" "}
-                <Link to={"/register"} className="signUp-link">
+                <Link to={"/register"} className={!isMobile ? "signUp-link" : "signUp-link-m"}>
                   <span>Create one now.</span>
                 </Link>
               </p>
@@ -84,9 +87,9 @@ function Login() {
           </div>
         </div>
       </div>
-      <div className="login-second-half">
+      {!isMobile ? <div className="login-second-half">
         <img src={login_png} alt="" />
-      </div>
+      </div> : null}
     </div>
   );
 }
