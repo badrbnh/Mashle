@@ -1,6 +1,6 @@
 import "../styles/testimonial.css";
 import quote from "../assets/quote.svg";
-import { isMuiElement, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 
 function testimonail() {
   const isMobile = useMediaQuery("(max-width: 768px)");
