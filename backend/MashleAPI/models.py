@@ -15,7 +15,7 @@ class Category(models.Model):
 def generate_filename(instance, filename):
     extension = filename.split('.')[-1]
     new_filename = f"{uuid4()}.{extension}"
-    return f"static/assets/{new_filename}"
+    return f"assets/{new_filename}"
 
 class MenuItems(models.Model):
     """Model representing menu items."""
