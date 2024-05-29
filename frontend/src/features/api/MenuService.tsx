@@ -9,9 +9,12 @@ import fetchCart from "./fetchCart";
 import "../../styles/menu.css";
 import bag from "../../assets/shoppingBag.svg";
 import Popup from "reactjs-popup";
+import { useMediaQuery } from "@mui/material";
 
-const isDevelpment = import.meta.env.MODE === 'development'
-const BASE_URL = isDevelpment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD;
+const isDevelpment = import.meta.env.MODE === "development";
+const BASE_URL = isDevelpment
+  ? import.meta.env.VITE_API_BASE_URL_LOCAL
+  : import.meta.env.VITE_API_BASE_URL_PROD;
 
 const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
   const userJSON = localStorage.getItem("user");
@@ -26,17 +29,20 @@ const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
 
   const accessToken = user.access;
   try {
-    const item_exist_response = await fetch(`${BASE_URL}/api/v1/cart-items/?search=${itemID}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-      
+    const item_exist_response = await fetch(
+      `${BASE_URL}/api/v1/cart-items/?search=${itemID}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
     if (!item_exist_response.ok) {
       throw new Error("Failed to check item existence in cart.");
     }
-      
+
     const item_exist = await item_exist_response.json();
     if (item_exist.results.length > 0) {
       // Item exists in the cart, show a message
@@ -59,7 +65,7 @@ const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
       },
       body: JSON.stringify({
         menuitem_id: itemID,
-        cart_id: cartID
+        cart_id: cartID,
       }),
     });
 
@@ -90,10 +96,12 @@ const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
 
 const MenuList = () => {
   const { searchQuery } = useSearchContext();
-  const { data: apiResponse, error, isValidating } = useSWR(
-    `${BASE_URL}/api/v1/menu-items/?search=${searchQuery}`,
-    fetcher
-  );
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const {
+    data: apiResponse,
+    error,
+    isValidating,
+  } = useSWR(`${BASE_URL}/api/v1/menu-items/?search=${searchQuery}`, fetcher);
 
   const [cartID, setCartID] = useState<number | null>(null);
 
@@ -118,7 +126,6 @@ const MenuList = () => {
         throw new Error("Cart ID not fetched yet.");
       }
       await addItemToCart(itemID, cartID);
-
     } catch (error) {
       console.error("Error adding item to cart:", error);
     } finally {
@@ -126,56 +133,100 @@ const MenuList = () => {
     }
   };
 
-
   return (
     <>
-      
       {error && <div>Failed to load</div>}
       {(isValidating || !apiResponse) && <Spinner />}
-      {apiResponse && (
-        <>
-
-          {apiResponse.results.slice(0, 12).map((menu: any) => (
-            <div className="dish-container" key={menu.id}>
-              <div className="dish-img">
-                <img src={`${menu.image}`} alt="" />
-              </div>
-              <p>{menu.title}</p>
-              <p className="dish-price">{menu.price} DH</p>
-              <div className="add-cart-container">
-                <img src={bag} alt="" />
-                <Popup
-                  trigger={<button className="add-cart">Add to cart</button>}
-                  modal
-                  position="center center"
-                >
-                  <div className="popup-container">
-                    <div className="popup-dish-img">
-                      <img src={`${menu.image}`} alt="" />
-                    </div>
-                    <div className="popup-right-half">
-                      <h1>{menu.title}</h1>
-                      <p className="dish-price">{menu.price} DH</p>
-                      <p>{menu.description}</p>
-                      <div className="popup-btn-cont">
-                        <button
-                          className="add-cart"
-                          onClick={() => handleAddToCart(menu.id)}
-                          disabled={isAddingToCart}
-                        >
-                          {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
-                        </button>
-                        <button className="add-cart">Checkout</button>
+      {apiResponse &&
+        (!isMobile ? (
+          <>
+            {apiResponse.results.slice(0, 12).map((menu: any) => (
+              <div className="dish-container" key={menu.id}>
+                <div className="dish-img">
+                  <img src={`${menu.image}`} alt="" />
+                </div>
+                <p>{menu.title}</p>
+                <p className="dish-price">{menu.price} DH</p>
+                <div className="add-cart-container">
+                  <img src={bag} alt="" />
+                  <Popup
+                    trigger={<button className="add-cart">Add to cart</button>}
+                    modal
+                    position="center center"
+                  >
+                    <div className="popup-container">
+                      <div className="popup-dish-img">
+                        <img src={`${menu.image}`} alt="" />
+                      </div>
+                      <div className="popup-right-half">
+                        <h1>{menu.title}</h1>
+                        <p className="dish-price">{menu.price} DH</p>
+                        <p>{menu.description}</p>
+                        <div className="popup-btn-cont">
+                          <button
+                            className="add-cart"
+                            onClick={() => handleAddToCart(menu.id)}
+                            disabled={isAddingToCart}
+                          >
+                            {isAddingToCart
+                              ? "Adding to Cart..."
+                              : "Add to Cart"}
+                          </button>
+                          <button className="add-cart">Checkout</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Popup>
+                  </Popup>
+                </div>
               </div>
-            </div>
-          ))}
-          <ToastContainer />
-        </>
-      )}
+            ))}
+            <ToastContainer />
+          </>
+        ) : (
+          <>
+            {apiResponse.results.slice(0, 6).map((menu: any) => (
+              <div className="dish-container-m" key={menu.id}>
+                <div className="dish-img-m">
+                  <img src={`${menu.image}`} alt="" />
+                </div>
+                <p>{menu.title}</p>
+                <p className="dish-price-m">{menu.price} DH</p>
+                <div className="add-cart-container-m">
+                  <img src={bag} alt="" />
+                  <Popup
+                    trigger={<button className="add-cart-m">Add to cart</button>}
+                    modal
+                    position="center center"
+                  >
+                    <div className="popup-container-m">
+                      <div className="popup-dish-img-m">
+                        <img src={`${menu.image}`} alt="" />
+                      </div>
+                      <div className="popup-right-half-m">
+                        <h1>{menu.title}</h1>
+                        <p className="dish-price-m">{menu.price} DH</p>
+                        <p>{menu.description}</p>
+                        <div className="popup-btn-cont-m">
+                          <button
+                            className="add-cart-m"
+                            onClick={() => handleAddToCart(menu.id)}
+                            disabled={isAddingToCart}
+                          >
+                            {isAddingToCart
+                              ? "Adding to Cart..."
+                              : "Add to Cart"}
+                          </button>
+                          <button className="add-cart-m">Checkout</button>
+                        </div>
+                      </div>
+                    </div>
+                  </Popup>
+                </div>
+              </div>
+            ))}
+            <ToastContainer />
+          </>
+        ))}
     </>
   );
 };

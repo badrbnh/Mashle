@@ -70,10 +70,10 @@ const home = () => {
           <p>Achieved national and international awards.</p>
         </div>
       </div>
-      {<Menu></Menu>
-      /* <Chefs></Chefs>
+      <Menu></Menu>
+      <Chefs></Chefs>
       <Best></Best>
-      <Testimonail></Testimonail> */}
+      <Testimonail></Testimonail>
     </>
   );
 };

@@ -8,6 +8,7 @@ import "../styles/signUp.css";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../components/spnner";
+import { useMediaQuery } from "@mui/material";
 
 export interface FormInput {
   username: string;
@@ -19,6 +20,7 @@ export interface FormInput {
 }
 
 function SignUp() {
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const {
     register,
     handleSubmit,
@@ -28,7 +30,9 @@ function SignUp() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
-  const { isLoading, isSuccess, isErrored, message, user } = useSelector((state: RootState) => state.auth);
+  const { isLoading, isSuccess, isErrored, message, user } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const password = watch("password");
   const re_password = watch("re_password");
@@ -53,13 +57,19 @@ function SignUp() {
   }, [isErrored, isSuccess, user, message, navigate, dispatch]);
 
   return (
-    <div className="signUp-container">
-      <div className="signUp-first-half">
-        <img src={signUpPicture} alt="" />
-      </div>
-      <div className="signUp-second-half">
+    <div className={!isMobile ? "signUp-container" : "signUp-container-m"}>
+      {!isMobile ? (
+        <div
+          className={!isMobile ? "signUp-first-half" : "signUp-first-half-m"}
+        >
+          <img src={signUpPicture} alt="" />
+        </div>
+      ) : null}
+      <div
+        className={!isMobile ? "signUp-second-half" : "signUp-second-half-m"}
+      >
         <div>
-          <div className="form-container">
+          <div className={!isMobile ? "form-container" : "form-container-m"}>
             <h1>Create your account</h1>
             <p>continue tracking your progress after creating your account.</p>
             <div className="google-signUp"></div>
@@ -69,9 +79,9 @@ function SignUp() {
               <p>OR</p>
               <div className="right-line"></div>
             </div>
-            
+
             <div>
-            {isLoading && <Spinner/>}
+              {isLoading && <Spinner />}
               <form onSubmit={handleSubmit(onSubmit)}>
                 <input
                   {...register("username", { required: true })}
@@ -99,25 +109,27 @@ function SignUp() {
 
                 <input
                   {...register("password", { required: true })}
-                  placeholder="Passowrd" type="password"
+                  placeholder="Passowrd"
+                  type="password"
                   style={{ borderColor: errors.password ? "red" : "" }}
                 />
 
                 <input
                   {...register("re_password", { required: true })}
-                  placeholder="Confirm Password" type="password"
+                  placeholder="Confirm Password"
+                  type="password"
                   style={{ borderColor: errors.re_password ? "red" : "" }}
                 />
                 <button type="submit"> Create Now </button>
               </form>
               <div className="have-account">
-              <p>
-                Already have an accont?{" "}
-                <Link to={"/login"} className="login-link">
-                  <span>Sign In.</span>
-                </Link>
-              </p>
-            </div>
+                <p>
+                  Already have an accont?{" "}
+                  <Link to={"/login"} className="login-link">
+                    <span>Sign In.</span>
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>

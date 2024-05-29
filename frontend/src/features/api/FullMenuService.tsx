@@ -10,6 +10,7 @@ import "../../styles/order_popup.css";
 import Popup from "reactjs-popup";
 import Spinner from "../../components/spnner";
 import fetchCart from "./fetchCart";
+import { useMediaQuery } from "@mui/material";
 
 const isDevelpment = import.meta.env.MODE === 'development'
 const BASE_URL = isDevelpment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_PROD;
@@ -91,6 +92,7 @@ const addItemToCart = async (itemID: number, cartID: number): Promise<void> => {
 
 const FullMenuList = () => {
   const { searchQuery } = useSearchContext();
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const { data: apiResponse, error, isValidating } = useSWR(
     `${BASE_URL}/api/v1/menu-items/?search=${searchQuery}`,
     fetcher
@@ -136,36 +138,36 @@ const FullMenuList = () => {
         <>
 
           {apiResponse.results.map((menu: any) => (
-            <div className="dish-container" key={menu.id}>
-              <div className="dish-img">
+            <div className={isMobile ? "dish-container-m" : "dish-container"} key={menu.id}>
+              <div className={isMobile ? "dish-img-m" : "dish-img"}>
                 <img src={`${menu.image}`} alt="" />
               </div>
               <p>{menu.title}</p>
-              <p className="dish-price">{menu.price} DH</p>
+              <p className={!isMobile ? "dish-price" : "dish-price-m"}>{menu.price} DH</p>
               <div className="add-cart-container">
                 <img src={bag} alt="" />
                 <Popup
-                  trigger={<button className="add-cart">Add to cart</button>}
+                  trigger={<button className={!isMobile ? "add-cart" : "add-cart-m"}>Add to cart</button>}
                   modal
                   position="center center"
                 >
-                  <div className="popup-container">
-                    <div className="popup-dish-img">
+                  <div className={!isMobile ? "popup-container" : "popup-container-m"}>
+                    <div className={!isMobile ? "popup-dish-img" : "popup-dish-img-m"}>
                       <img src={`${menu.image}`} alt="" />
                     </div>
-                    <div className="popup-right-half">
+                    <div className={!isMobile ? "popup-right-half" : "popup-right-half-m"}>
                       <h1>{menu.title}</h1>
-                      <p className="dish-price">{menu.price} DH</p>
+                      <p className={!isMobile ? "dish-price" : "dish-price-m"}>{menu.price} DH</p>
                       <p>{menu.description}</p>
-                      <div className="popup-btn-cont">
+                      <div className={!isMobile ? "popup-btn-cont" : "popup-btn-cont-m"}>
                         <button
-                          className="add-cart"
+                          className={!isMobile ? "add-cart" : "add-cart-m"}
                           onClick={() => handleAddToCart(menu.id)}
                           disabled={isAddingToCart}
                         >
                           {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
                         </button>
-                        <button className="add-cart">Checkout</button>
+                        <button className={!isMobile ? "add-cart" : "add-cart-m"}>Checkout</button>
                       </div>
                     </div>
                   </div>

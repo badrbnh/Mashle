@@ -73,3 +73,78 @@
     cursor: pointer;
     margin-top: 16px;
 }
+
+@media screen and (max-width: 600px){
+  .popup-overlay {
+    background: rgba(255, 255, 255, 0.85);
+  }
+  .popup-container-m {
+    background-color: #fdebd4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    min-height: 180px;
+    border-radius: 14px;
+    font-family: "poppins", sans-serif;
+    padding: 20px;
+  }
+  
+  .popup-left-half-m {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-dish-img-m {
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
+  }
+  
+  .popup-dish-img-m img {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+  }
+  
+  .popup-right-half-m {
+    display: flex;
+    flex-direction: column;
+ 
+  }
+  
+  .popup-right-half-m h1 {
+    font-size: 32px;
+    color: #4b4b4b;
+    padding: 0;
+  }
+  
+  .popup-dish-price-m {
+    font-size: 24px;
+    color: #4b4b4b;
+    font-weight: 800;
+  }
+  
+  .popup-container-m p {
+    font-size: 16px;
+    color: #4b4b4b;
+  }
+  
+  .popup-btn-cont-m {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+  .popup-btn-cont-m button {
+      border: none;
+      background-color: #d17801;
+      border-radius: 20px;
+      width: 120px;
+      height: 36px;
+      cursor: pointer;
+      margin-top: 16px;
+  }
+  
+}
